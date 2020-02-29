@@ -1,0 +1,984 @@
+@echo off  
+:: BatchGotAdmin
+:-------------------------------------
+REM  --> Check for permissions
+    IF "%PROCESSOR_ARCHITECTURE%" EQU "amd64" (
+>nul 2>&1 "%SYSTEMROOT%\SysWOW64\cacls.exe" "%SYSTEMROOT%\SysWOW64\config\system"
+) ELSE (
+>nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
+)
+
+REM --> If error flag set, we do not have admin.
+if '%errorlevel%' NEQ '0' (
+    echo Requesting administrative privileges...
+    goto UACPrompt
+) else ( goto gotAdmin )
+
+:UACPrompt
+    echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
+    set params= %*
+    echo UAC.ShellExecute "cmd.exe", "/c ""%~s0"" %params:"=""%", "", "runas", 1 >> "%temp%\getadmin.vbs"
+
+    "%temp%\getadmin.vbs"
+    del "%temp%\getadmin.vbs"
+    exit /B
+
+:gotAdmin
+    pushd "%CD%"
+    CD /D "%~dp0"
+
+@echo off
+title ULTIMATE Tool Suporte TI [Ver1.0] LuanSoftwares©
+cls
+:menu
+mode con cols=75 lines=40
+setlocal
+call :setESC
+color 07
+cls
+echo   %ESC%[93mULTIMATE Tool Suporte TI: [Versao 1.0] LuanSoftwares(c)©  %ESC%[0m
+echo.
+echo.
+:::                   ___________________
+:::                   | _______________ |               
+:::                   | |mXXXXXXXXXXXs| |
+:::                   | |XXXXXXXXXXXXX| |
+:::                   | |XXXXXXXXXXXXX| |
+:::                   | |XXXXXXXXXXXXX| |
+:::                   | |dXXXXXXXXXXos| |
+:::                   |_________________|
+:::                       _[_______]_
+:::                   ___[___________]___
+:::                  |         [_____] []|__
+:::                  |         [_____] []|  \__
+:::                  L___________________J     \ 
+:::                   ___________________      /\
+:::                  /###################\    (__)
+:::
+for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
+echo         %ESC%[36m1.%ESC%[0mAtivar e Colocar Senha Padrao do Administrador.
+echo         %ESC%[36m2.%ESC%[0mDesativar o Perfil SESP.
+echo         %ESC%[36m3.%ESC%[0mExecutar Pop Sesp(64bits).
+echo         %ESC%[36m4.%ESC%[0mIp Fixo SESP.
+echo         %ESC%[36m5.%ESC%[0mExecutar Pop Sesp para PC Externo.
+echo         %ESC%[36m6.%ESC%[0mIp Fixo SEJUDH.
+echo         %ESC%[36m7.%ESC%[0mInstalar Aker(Somente SAJU,SEJUDH e FUNAC).
+echo         %ESC%[36m8.%ESC%[0mPasta temp do usuario atual.
+echo         %ESC%[36m9.%ESC%[0mVerificar ChekList de Formatacao(Somente Leitura).
+echo         %ESC%[36m10.%ESC%[0mLista de Programas(Somente leitura).
+echo         %ESC%[36m11.%ESC%[0mAtivar Windows 10(Somente Interno).
+echo         %ESC%[36m12.%ESC%[0mVerificar Configuracoes e Informacoes do PC.
+echo         %ESC%[36m13.%ESC%[0mVerificar Todos os Programas instalados no PC.
+echo         %ESC%[36m14.%ESC%[0mInstalar Softwares pela internet(Leia Documentacao!).
+echo         %ESC%[36m15.%ESC%[0mFazer Pendrive Bootavel Windows 7 mini(quebrar senha).
+echo         %ESC%[36m16.%ESC%[0mContato e Informacoes do Software.
+echo.
+echo        Computador: %computername%        Usuario: %username%
+echo.
+echo.     
+
+
+
+set /p opcao= Escolha uma opcao: 
+echo.
+if %opcao% equ 1 goto opcao1
+if %opcao% equ 2 goto opcao2
+if %opcao% equ 3 goto opcao3
+if %opcao% equ 4 goto opcao4
+if %opcao% equ 5 goto opcao5
+if %opcao% equ 6 goto opcao6
+if %opcao% equ 7 goto opcao7
+if %opcao% equ 8 goto opcao8
+if %opcao% equ 9 goto opcao9
+if %opcao% equ 10 goto opcao10
+if %opcao% equ 11 goto opcao11
+if %opcao% equ 12 goto opcao12
+if %opcao% equ 13 goto opcao13
+if %opcao% equ 14 goto opcao14
+if %opcao% equ 15 goto opcao15
+if %opcao% equ 16 goto opcao16
+if %opcao% GEQ 17 goto opcao17
+
+:opcao1
+cls
+echo.
+echo    %ESC%[42mAtivando Perfil de Administrador%ESC%[0m
+echo.
+net user administrator /active:yes
+echo.
+echo    %ESC%[42mColocando Senha Padrao%ESC%[0m
+echo.
+net user administrator "W%ker$00_t"
+echo.
+echo    %ESC%[42mConcluido!!!%ESC%[0m
+echo.
+pause
+goto menu
+
+:opcao2
+cls
+echo.
+echo     %ESC%[42mDesativando Perfil sesp%ESC%[0m
+echo.
+net user sesp /active:no
+echo.
+echo     %ESC%[42mPerfil Desativado Com Sucesso.%ESC%[0m
+echo.
+pause 
+goto menu
+
+:opcao3
+cls
+echo.
+==================================================================
+echo   Instalando Adobe Reader    (passo 1 de 9)
+==================================================================
+start /wait msiexec /i "%~dp0\adobe\AcroRead.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando Google Chrome   (passo 2 de 9)
+================================================================== 
+
+start /wait msiexec /i "%~dp0\chrome\GoogleChromeStandaloneEnterprise64.msi" /qn
+
+echo.
+==================================================================
+echo   Instalando Mozilla Firefox (passo 3 de 9)
+==================================================================
+
+start /wait msiexec /i "%~dp0\firefox\Firefox Setup 73.0.1.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando Java            (passo 4 de 9)
+==================================================================
+
+start /wait msiexec /i "%~dp0\java\jre1.8.0_20264.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando pdfsam-v3       (passo 5 de 9)
+==================================================================
+
+start /wait msiexec /i "%~dp0\pdfsam\pdfsam-v3.3.0.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando libreoffice     (passo 6 de 9)
+==================================================================
+If not exist C:\install\logs\ md C:\install\logs\
+start /wait Msiexec /i "%~dp0\libreoffice\LibreOffice_6.4.0_Win_x64.msi" /qn /norestart ALLUSERS=1 CREATEDESKTOPLINK=0 REGISTER_ALL_MSO_TYPES=0 REGISTER_NO_MSO_TYPES=1 ISCHECKFORPRODUCTUPDATES=0 QUICKSTART=1 ADDLOCAL=ALL UI_LANGS=en_US,fr,es /l "c:\install\logs\libreoffice.log"
+
+echo.
+==================================================================
+echo   Instalando 7-ZIP (passo 7 de 9)   
+==================================================================
+start /wait msiexec /i "%~dp0\7-zip\7z1900-x64.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando TeamViewer10host (passo 8 de 9)  
+==================================================================
+start /wait msiexec /i "%~dp0\teamviewer\TeamViewer_Host-idc2vgck97.msi" /qn 
+
+regedit /s "%~dp0\teamviewer\TeamViewer_Settings.reg"
+
+
+echo.
+==================================================================
+echo   instalando  Antivirus kaspersky   (passo 9 de 9)
+==================================================================
+"%~dp0\kaspersky\installer.exe"
+
+echo.
+==================================================================
+echo   concluido
+==================================================================
+
+pause
+goto menu
+
+:opcao4
+@echo off
+set INTERFACE=Ethernet
+set IP=172.17.0.248
+set MASCARA=255.255.252.0
+set GATEWAY=172.17.0.1
+set DNS=172.16.5.100
+set DNS2=172.16.5.240
+:CONFIRMAR
+rem opções
+choice /C FAC /M "Pressione: [F]ixo, [A]utomatico ou [C]ancelar"
+IF errorlevel=3 goto FIM
+IF errorlevel=2 goto AUTOMATICO
+IF errorlevel=1 goto FIXO
+goto CONFIRMAR
+:FIXO
+ netsh interface ip set address name="%INTERFACE%" static %IP% %MASCARA% %GATEWAY% 1
+ netsh interface ip set dnsservers name="%INTERFACE%" static %DNS% primary no
+ netsh intERFACE ip set dnsservers name="%INTERFACE%" static %DNS2% index=2 
+ goto :FIM
+:AUTOMATICO
+ netsh interface ip set address name="%INTERFACE%" dhcp
+ netsh interface ip set dnsservers name="%INTERFACE%" dhcp
+ goto :FIM
+:FIM
+goto menu
+
+
+:opcao5
+cls
+echo.
+==================================================================
+echo   Instalando Adobe Reader    (passo 1 de 8)
+==================================================================
+start /wait msiexec /i "%~dp0\adobe\AcroRead.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando Google Chrome   (passo 2 de 8)
+================================================================== 
+
+start /wait msiexec /i "%~dp0\chrome\GoogleChromeStandaloneEnterprise64.msi" /qn
+
+echo.
+==================================================================
+echo   Instalando Mozilla Firefox (passo 3 de 8)
+==================================================================
+
+start /wait msiexec /i "%~dp0\firefox\Firefox Setup 73.0.1.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando Java            (passo 4 de 8)
+==================================================================
+
+start /wait msiexec /i "%~dp0\java\jre1.8.0_20264.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando pdfsam-v3       (passo 5 de 8)
+==================================================================
+
+start /wait msiexec /i "%~dp0\pdfsam\pdfsam-v3.3.0.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando libreoffice     (passo 6 de 8)
+==================================================================
+If not exist C:\install\logs\ md C:\install\logs\
+start /wait Msiexec /i "%~dp0\libreoffice\LibreOffice_6.4.0_Win_x64.msi" /qn /norestart ALLUSERS=1 CREATEDESKTOPLINK=0 REGISTER_ALL_MSO_TYPES=0 REGISTER_NO_MSO_TYPES=1 ISCHECKFORPRODUCTUPDATES=0 QUICKSTART=1 ADDLOCAL=ALL UI_LANGS=en_US,fr,es /l "c:\install\logs\libreoffice.log"
+
+echo.
+==================================================================
+echo   Instalando 7-ZIP (passo 7 de 8)   
+==================================================================
+start /wait msiexec /i "%~dp0\7-zip\7z1900-x64.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando TeamViewer10host (passo 8 de 8) quase lá...  
+==================================================================
+start /wait msiexec /i "%~dp0\TeamviwerExterno\TeamViewer_Host-idc2vgck97.msi" /qn 
+
+regedit /s "%~dp0\teamviewer\TeamViewer_Settings.reg" 
+
+echo.
+==================================================================
+echo   Concluido!!! 
+==================================================================
+pause
+goto menu
+
+
+
+:opcao6
+@echo off
+set INTERFACE=Ethernet
+set IP=10.23.1.101
+set MASCARA=255.255.0.0
+set GATEWAY=10.23.9.11
+set DNS=10.23.1.10
+set DNS2=10.23.6.10
+:CONFIRMAR
+rem opções
+choice /C FAC /M "Pressione: [F]ixo, [A]utomatico ou [C]ancelar"
+IF errorlevel=3 goto FIM
+IF errorlevel=2 goto AUTOMATICO
+IF errorlevel=1 goto FIXO
+goto CONFIRMAR
+:FIXO
+ netsh interface ip set address name="%INTERFACE%" static %IP% %MASCARA% %GATEWAY% 1
+ netsh interface ip set dnsservers name="%INTERFACE%" static %DNS% primary no
+ netsh intERFACE ip set dnsservers name="%INTERFACE%" static %DNS2% index=2 
+ goto :FIM
+:AUTOMATICO
+ netsh interface ip set address name="%INTERFACE%" dhcp
+ netsh interface ip set dnsservers name="%INTERFACE%" dhcp
+ goto :FIM
+:FIM
+goto menu
+
+:opcao7
+msiexec /i "%~dp0\aker\akerclient-2.0.8-pt-win64-install-0005.msi"
+goto menu
+
+
+
+:opcao8
+cls
+IF EXIST c:\windows\temp\ del /f /s /q c:\windows\temp\
+DEL /f /s /q %temp%\
+IF EXIST “C:\Documents and Settings\” (
+for /D %%x in (“C:\Documents and Settings\*”) do (
+rmdir /s /q “%%x\Local Settings\Temporary Internet Files”
+mkdir “%%x\Local Settings\Temporary Internet Files”
+)
+)
+IF EXIST “C:\Documents and Settings\” (
+for /D %%x in (“C:\Documents and Settings\*”) do (
+rmdir /s /q “%%x\Local Settings\Temp”
+mkdir “%%x\Local Settings\Temp”
+)
+)
+IF EXIST “C:\Users\” (
+for /D %%x in (“C:\Users\*”) do (
+rmdir /s /q “%%x\AppData\Local\Temp”
+mkdir “%%x\AppData\Local\Temp”
+)
+)
+IF EXIST “C:\Users\” (
+for /D %%x in (“C:\Users\*”) do (
+rmdir /s /q “%%x\AppData\Local\Microsoft\Windows\Temporary Internet Files”
+mkdir “%%x\AppData\Local\Microsoft\Windows\Temporary Internet Files”
+)
+)
+pause
+goto menu
+
+
+
+:opcao9
+mode 110,55
+color 70
+echo =====================================================================================
+echo *
+echo * 0 verificar o nome do computador antes de formatar 
+echo *   e verificar se tem backup (EXTREMA IMPORTANCIA)
+echo * 
+echo * 1 ativar administrador e colocar a senha de Administrador
+echo * 2 instalar programas padrao:
+echo *   adobe reader e sua atualizacao
+echo *   chrome(deixar navegador padrao)
+echo *   java
+echo *  
+echo *   libreoffice
+echo *   office(se tiver licenca)
+echo *   teamviewer HOST (externo com script)
+echo *   winrar
+echo *
+echo * 3 colocar nome da maquina e colocar maquina no dominio
+echo *   atalho: windows+ pausebreak
+echo *   dominio sesp: seguranca.local
+echo *   e trocar nome da maquina
+echo *
+echo * 4 instalar programas que precisam da internet
+echo *   firefox
+echo *   instalar kaspersky mais atualizado
+echo *
+echo * 5 instalar drivers(precisa de internet)
+echo *   usar programa DRIVER BOOSTER(desabilitar opcao de instalar o opera) ou
+echo *   ir no gerenciador de dispositivos(atalho: windows + pausebreak) e atualizar os driver 
+echo *
+echo * 6 ativar o windows
+echo *   abrir a pasta (Windows.10.Digital.Activation.CMD)
+echo *   iniciar o arquivo (Windows_10_Digital_Activation)
+echo *   clicar numero 1 para ativar.
+echo *   clicar numero 2 para ver se ativou. verifica msg (A maquina esta ativada permanentemente.)
+echo *
+echo * 7 voltar o backup para o disco local (C);
+echo *
+echo *
+echo *
+echo *   obs: caso seja necessario fazer uma limpeza fisica.
+echo *
+echo *   como fazer mapeamento de pasta compartilhada;
+echo *
+echo *   1 abrir executar e digitar \\saens-nas
+echo *   2 abrir o cmd e digitar start \\saens-nas
+echo *   3 clica na pasta solicitada e com botao direito e seleciona conectar
+echo *    
+echo * 
+echo *
+echo *   como mapear impressora em rede 
+echo *
+echo *   1 abrir executar e digitar \\ssp-srv-prt2
+echo *   2 abrir o cmd e digitar start \\ssp-srv-prt2
+echo *   3 clica na impressora  solicitada e com botao direito e seleciona conectar
+echo *
+echo ==============================================
+pause
+goto menu
+
+
+:opcao10
+echo ----------------------------------------------
+echo # Adobe Reader 11.0.23                       #
+echo # Google Chrome Stand alone Enterprise       #
+echo # Mozilla Firefox 73.0.1                     #
+echo # Java 1.8.0_20264                           #
+echo # 7-ZIP 19.00  (similar ao Winrar)           #
+echo # LibreOffice_6.0.4                          #
+echo # Team Viewer 10 host e Script               #
+echo # Kaspersky (popsesp)                        #
+echo ---------------------------------------------- 
+pause
+goto menu
+
+
+:opcao11
+@echo off
+fltmc >nul 2>&1 || (
+  echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\GetAdmin.vbs"
+  echo UAC.ShellExecute "%~fs0", "", "", "runas", 1 >> "%temp%\GetAdmin.vbs"
+  cmd /u /c type "%temp%\GetAdmin.vbs">"%temp%\GetAdminUnicode.vbs"
+  cscript //nologo "%temp%\GetAdminUnicode.vbs"
+  del /f /q "%temp%\GetAdmin.vbs" >nul 2>&1
+  del /f /q "%temp%\GetAdminUnicode.vbs" >nul 2>&1
+  exit
+)
+mode con cols=70 lines=37
+color 
+title Ativacao do Windows 10 (SESP)
+::===========================================================================
+setlocal enabledelayedexpansion
+setlocal EnableExtensions
+pushd "%~dp0"
+cd /d "%~dp0"
+:MAINMENU
+echo.  :================================================================:
+echo.
+Echo.    [1] Ativar Windows 10 com Licenca Digital 
+Echo.
+Echo.    [2] Checar Status de Ativacao do Windows 
+echo.    
+Echo.    [3] Sair
+echo.
+echo.  :================================================================:
+choice /C:123 /N /M "ESCOLHA : "
+if errorlevel 3 goto :Sair
+if errorlevel 2 goto :Check
+if errorlevel 1 goto :HWIDActivate
+
+::===========================================================================
+
+:Sair
+goto menu
+::===========================================================================
+:HWIDActivate
+set slp=SoftwareLicensingProduct
+set sps=SoftwareLicensingService
+FOR /F "tokens=3" %%I IN ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" ^| findstr CurrentVersion ^| findstr REG_SZ') DO (SET winver=%%I)
+for /f "tokens=2* delims= " %%a in ('reg query "HKLM\System\CurrentControlSet\Control\Session Manager\Environment" /v "PROCESSOR_ARCHITECTURE"') do if "%%b"=="AMD64" (set vera=x64) else (set vera=x86)
+for /f "tokens=2 delims== " %%A in ('"wmic path %slp% where (Name LIKE '%%Windows%%' and PartialProductKey is not null) get LicenseStatus /format:list"') do set status=%%A
+for /f "tokens=2 delims=, " %%A in ('"wmic path %slp% where (Name LIKE '%%Windows%%' and LicenseStatus='%status%') get name /value"') do set osedition=%%A
+
+if not exist "bin" md "bin"
+set "gatherosstate=bin\%vera%\gatherosstate.exe"
+set "slc=bin\%vera%\slc.dll"
+::===============================================================================================================
+:GenerateHWIDA
+cd /d "%~dp0"
+cls
+call :Header "WINDOWS 10 DIGITAL LICENSE [Windows 10 %osedition% %vera%]"
+echo:
+if [%osedition%] == [Cloud] (
+    set "edition=Cloud"
+    set "key=V3WVW-N2PV2-CGWC3-34QGF-VMJ2C"
+    set "sku=178"
+    set "editionId=X21-32983"
+    goto :parseAndPatch
+)
+if [%osedition%] == [CloudN] (
+    set "edition=CloudN"
+    set "key=NH9J3-68WK7-6FB93-4K3DF-DJ4F6"
+    set "sku=179"
+    set "editionId=X21-32987"
+    goto :parseAndPatch
+)
+if [%osedition%] == [Core] (
+    set "edition=Core"
+    set "key=YTMG3-N6DKC-DKB77-7M9GH-8HVX7"
+    set "sku=101"
+    set "editionId=X19-98868"
+    goto :parseAndPatch
+)
+if [%osedition%] == [CoreCountrySpecific] (
+    set "edition=CoreCountrySpecific"
+    set "key=N2434-X9D7W-8PF6X-8DV9T-8TYMD"
+    set "sku=99"
+    set "editionId=X19-99652"
+    goto :parseAndPatch
+)
+if [%osedition%] == [CoreN] (
+    set "edition=CoreN"
+    set "key=4CPRK-NM3K3-X6XXQ-RXX86-WXCHW"
+    set "sku=98"
+    set "editionId=X19-98877"
+    goto :parseAndPatch
+)
+if [%osedition%] == [CoreSingleLanguage] (
+    set "edition=CoreSingleLanguage"
+    set "key=BT79Q-G7N6G-PGBYW-4YWX6-6F4BT"
+    set "sku=100"
+    set "editionId=X19-99661"
+    goto :parseAndPatch
+)
+if [%osedition%] == [Education] (
+    set "edition=Education"
+    set "key=YNMGQ-8RYV3-4PGQ3-C8XTP-7CFBY"
+    set "sku=121"
+    set "editionId=X19-98886"
+    goto :parseAndPatch
+)
+if [%osedition%] == [EducationN] (
+    set "edition=EducationN"
+    set "key=84NGF-MHBT6-FXBX8-QWJK7-DRR8H"
+    set "sku=122"
+    set "editionId=X19-98892"
+    goto :parseAndPatch
+)
+if [%osedition%] == [Enterprise] (
+    set "edition=Enterprise"
+    set "key=XGVPP-NMH47-7TTHJ-W3FW7-8HV2C"
+    set "sku=4"
+    set "editionId=X19-99683"
+    goto :parseAndPatch
+)
+if [%osedition%] == [EnterpriseN] (
+    set "edition=EnterpriseN"
+  set "key=WGGHN-J84D6-QYCPR-T7PJ7-X766F"
+    set "sku=27"
+    set "editionId=X19-98746"
+    goto :parseAndPatch
+)
+if [%osedition%] == [EnterpriseS] (
+    set "edition=EnterpriseS"
+    set "key=NK96Y-D9CD8-W44CQ-R8YTK-DYJWX"
+    set "sku=125"
+    set "editionId=X21-05035"
+    goto :parseAndPatch
+)
+if [%osedition%] == [EnterpriseSN] (
+    set "edition=EnterpriseSN"
+    set "key=RW7WN-FMT44-KRGBK-G44WK-QV7YK"
+    set "sku=126"
+    set "editionId=X21-04921"
+    goto :parseAndPatch
+)
+if [%osedition%] == [Professional] (
+    set "edition=Professional"
+    set "key=VK7JG-NPHTM-C97JM-9MPGT-3V66T"
+    set "sku=48"
+    set "editionId=X19-98841"
+    goto :parseAndPatch
+)
+if [%osedition%] == [ProfessionalEducation] (
+    set "edition=ProfessionalEducation"
+    set "key=8PTT6-RNW4C-6V7J2-C2D3X-MHBPB"
+    set "sku=164"
+    set "editionId=X21-04955"
+    goto :parseAndPatch
+)
+if [%osedition%] == [ProfessionalEducationN] (
+    set "edition=ProfessionalEducationN"
+    set "key=GJTYN-HDMQY-FRR76-HVGC7-QPF8P"
+    set "sku=165"
+    set "editionId=X21-04956"
+    goto :parseAndPatch
+)
+if [%osedition%] == [ProfessionalN] (
+    set "edition=ProfessionalN"
+    set "key=2B87N-8KFHP-DKV6R-Y2C8J-PKCKT"
+    set "sku=49"
+    set "editionId=X19-98859"
+    goto :parseAndPatch
+)
+if [%osedition%] == [ProfessionalWorkstation] (
+    set "edition=ProfessionalWorkstation"
+    set "key=DXG7C-N36C4-C4HTG-X4T3X-2YV77"
+    set "sku=161"
+    set "editionId=X21-43626"
+    goto :parseAndPatch
+)
+if [%osedition%] == [ProfessionalWorkstationN] (
+    set "edition=ProfessionalWorkstationN"
+    set "key=WYPNQ-8C467-V2W6J-TX4WX-WT2RQ"
+    set "sku=162"
+    set "editionId=X21-43644"
+    goto :parseAndPatch
+)
+if [%osedition%] == [ServerRdsh] (
+    set "edition=ServerRdsh"
+    set "key=NJCF7-PW8QT-3324D-688JX-2YV66"
+    set "sku=175"
+    set "editionId=X21-41295"
+    goto :parseAndPatch
+)
+::===============================================================================================================
+:parseAndPatch
+cls
+mode con cols=97 lines=15
+call :Header "WINDOWS 10 DIGITAL LICENSE [Windows 10 %osedition% %vera%]"
+echo Files are being prepared...
+if not exist %gatherosstate% (
+    call :Footer
+    echo gatherosstate.exe not found. Enter ISO drive letter to copy.
+    call :Footer
+    set /p ogspath=Enter drive letter : ^>
+    xcopy "!ogspath!:\sources\gatherosstate.exe" /s ".\bin" /Q /Y >nul 2>&1
+)
+set "ps=bin\
+if [%osedition%] == [EnterpriseN] (
+    set "ps=bin\entn.ps1"
+    xcopy "!ps!" /s ".\bin" /Q /Y >nul 2>&1
+    cd /d "bin"
+    set "ps=entn.ps1"
+    for /f "tokens=*" %%a in ('powershell -executionpolicy bypass -File !ps!') do set "key=%%a"
+    if exist "!ps!" del /s /q "!ps!" >nul 2>&1
+)
+if [%osedition%] == [EnterpriseSN] (
+    set "ps=bin\entsn.ps1"
+    xcopy "!ps!" /s ".\bin" /Q /Y >nul 2>&1
+    cd /d "bin"
+    set "ps=entsn.ps1"
+    for /f "tokens=*" %%a in ('powershell -executionpolicy bypass -File !ps!') do set "key=%%a"
+    if exist "!ps!" del /s /q "!ps!" >nul 2>&1
+)
+call :Footer
+cls
+mode con cols=97 lines=48
+call :Header "WINDOWS 10 DIGITAL LICENSE [Windows 10 %osedition% %vera%]"
+echo Creating registry entries...
+reg add "HKLM\SYSTEM\Tokens" /v "Channel" /t REG_SZ /d "Retail" /f
+reg add "HKLM\SYSTEM\Tokens\Kernel" /v "Kernel-ProductInfo" /t REG_DWORD /d %sku% /f
+reg add "HKLM\SYSTEM\Tokens\Kernel" /v "Security-SPP-GenuineLocalStatus" /t REG_DWORD /d 1 /f
+call :Footer
+echo  Default product key is installing for Windows 10 %edition% %vera%...
+echo:
+cscript /nologo %windir%\system32\slmgr.vbs -ipk %key%
+call :Footer
+echo Create GenuineTicket.XML file for Windows 10 %edition% %vera%...
+start /wait "" "%gatherosstate%"
+timeout /t 3 >nul 2>&1
+call :Footer
+echo GenuineTicket.XML file is installing for Windows 10 %edition% %vera%...
+echo:
+clipup -v -o -altto bin\%vera%\
+call :Footer
+echo Windows 10 %edition% %vera% activating...
+echo:
+cscript /nologo %windir%\system32\slmgr.vbs -ato
+call :Footer
+echo Deleting registry entries...
+reg delete "HKLM\SYSTEM\Tokens" /f
+call :Footer
+echo Pressione qualquer tecla para continuar...
+pause >nul
+CLS
+mode con cols=60 lines=25
+goto:MainMenu
+::===============================================================================================================
+:Header
+echo.
+echo %~1
+echo.
+echo:
+goto:eof
+::===============================================================================================================
+:Footer
+echo:
+echo.
+echo:
+goto:eof
+::===============================================================================================================
+: HWIDA_EXIT
+CLS
+GOTO MAINMENU
+::===============================================================================================================
+:Check
+cd /d "%~dp0" && ( if exist "%temp%\getadmin.vbs" del "%temp%\getadmin.vbs" ) && fsutil dirty query %systemdrive% 1>nul 2>nul || (  cmd /u /c echo Set UAC = CreateObject^("Shell.Application"^) : UAC.ShellExecute "cmd.exe", "/k cd ""%~sdp0"" && ""%~s0""", "", "runas", 1 >> "%temp%\getadmin.vbs" && "%temp%\getadmin.vbs" && exit /B )
+CLS
+mode con cols=70 lines=40
+ECHO ************************************************************
+ECHO ***                   Windows Status                     ***
+ECHO ************************************************************
+cscript //nologo %systemroot%\System32\slmgr.vbs /dli
+cscript //nologo %systemroot%\System32\slmgr.vbs /xpr
+ECHO ____________________________________________________________
+)
+echo.
+echo Pressione qualquer tecla para continuar...
+pause >nul
+CLS
+mode con cols=60 lines=25
+GOTO MAINMENU
+::===============================================================================================================
+goto menu
+
+:opcao12
+mode 110,55
+systeminfo
+pause
+goto menu
+
+:opcao13
+mode 110,55
+wmic product get name
+pause
+goto menu
+
+:opcao14
+ECHO OFF 
+mode 110,50
+echo [A] Instalar a Aplicacao Chocolatey(precisa reiniciar o pc).
+echo.
+echo [B] ja possuo o chocolatey e quero instalar um novo software(ex: Choco install adobereader).
+echo entre no site para verificar todos os pacotes possiveis de instalacao (https://chocolatey.org/packages)
+echo.
+echo [C] Voltar ao Menu Principal.
+echo.
+choice /C ABC /N /M "Escolha:"
+if errorlevel 3 goto :CHOCOSAIR
+if errorlevel 2 goto :CHOCOINSTALL
+if errorlevel 1 goto :CHOCO
+::==============================================================================================================
+:CHOCOINSTALL
+cls
+mode 70,37
+cmd.exe
+goto menu
+::===============================================================================================================
+:CHOCO
+@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "[System.Net.ServicePointManager]::SecurityProtocol = 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+goto menu
+::===============================================================================================================
+:CHOCOSAIR
+goto menu
+
+:opcao15
+echo (ATENCAO!!! esse comando vai formatar o Pendrive em NTFS)
+SET /P USB= Digite e letra do Diretorio USB (C:, D:, E: etc):
+format %USB%: /FS:NTFS /X /Q
+XCOPY %~dp0\miniwin7 "%USB%:\" /c /g /d /i /e /h /-y
+echo pendrive Bootavel criado com sucesso.
+pause
+goto menu
+
+:opcao16
+echo off
+echo ==============================================
+echo * Para Duvidas e Sugestoes segue o contato:  *
+echo * Email:luanrodriguesleite@gmai.com          *
+echo * Versao: 1.0                                *
+echo * Codename:KnightRider                       *
+echo * Desenvolvedor: Luan Rodrigues Leite        *
+echo * Colaborador e Beta tester:Marcelo Moreira  *
+echo * Agradecimentos: Douglas Graciane           *
+echo ==============================================
+choice /C AB /N /M " [A] Voltar  [B]EasterEgg  Escolha:"
+if errorlevel 2 goto :SENHAS
+if errorlevel 1 goto :MENUP
+::===========================================================================
+:MENUP 
+goto menu
+::===========================================================================
+:SENHAS
+set Password1=showmewhatyougot
+set Password2=KnightRider
+set Password3=knightrider
+set Password4=matrix
+set Password5=karla
+set Password6=ariel
+set Password7=samaris
+goto CHECK
+
+:CHECK
+echo EasterEgg
+set /p pass="Password=> "
+if %pass%==%Password1% goto OPEN1
+if %pass%==%Password2% goto OPEN2
+if %pass%==%Password3% goto OPEN2
+if %pass%==%Password4% goto OPEN4
+if %pass%==%Password5% goto OPEN5
+if %pass%==%Password6% goto OPEN6
+if %pass%==%Password7% goto OPEN7
+If NOT %pass%==%Password1%%Password2%%Password3%%Password4%%Password5%%Password6%%Password7% goto FAIL
+goto END
+
+:OPEN7
+mode 67,26
+echo.
+echo  ___________________________________________________
+echo  [ http:\\www.roupas.com.br                        ] 
+echo  [_________________________________________________]
+echo  [                                                 ]
+echo  [                                                 ]
+echo  [  /] ]\         [   ]         [   ]              ]
+echo  [ ( \./ )       ( \ / )       (.\ /.)             ]
+echo  [  \ : /         \\*//         \   /              ]
+echo  [  ) : (         ))*((         ) . (              ]
+echo  [ /  :  \       ///[\\\       /  v  \             ]
+echo  [ [__:__[       ////[\\\     /.......\            ]   
+echo  [  R$100        R$150          R$200              ]
+echo  [                                                 ]
+echo  [_________________________________________________]
+echo.
+pause
+goto menu
+
+
+:OPEN6
+mode 70,37
+echo.
+echo                    _
+echo                ,='' `''=,       o
+echo               /   ,=='''-;        , __
+echo       ~      /      ,--'/=,)  o    \`\\'._     -,
+echo             ]   .='/ }0(0.=''       / _  ]]];._//)
+echo            /     (J    ^\ \     o_/@ @  ///  ]=(
+echo          .'    .' \  '='/  '-.  ( (`__,     ,`\]
+echo         /     /    \`-;_      \  '.\_/ ]\_.'
+echo    ~   /      ]   /` _  \      )   `''```
+echo       /  ],   ;  /`\/ `\ \    /.-._///_
+echo       ]/     '   \_,\__/\ \.-'.'----'`
+echo        \]     '.   \     \   /`-,   ~
+echo          `\     _.-'\    (`-`  .'
+echo            `-.-' _.-')__./,--'
+echo         .--'`,-'`'''`    ` \
+echo        /`'`-`               ]          ~
+echo       ]                     /
+echo    ~  ]     .-'__         .'
+echo        \   ;''`  `'''----'`
+echo         \   \
+echo          '.  `\
+echo            )   `-.            ~
+echo           /       `-._
+echo          ]     ,      `-,
+echo       ~  \   .' `''----`
+echo           `.(
+echo.`
+echo.
+echo.
+pause
+goto menu
+
+:OPEN5
+start %~dp0/snake.cmd
+goto menu
+:FAIL
+cls
+echo Errou IRMAO
+pause
+goto opcao8
+
+:OPEN4
+echo       Tome a Pilula AZUL volte a vida para o normal.
+echo       Tome a Pilula VERMELHA e entre na MATRIX.
+choice /C AV /N /M "          [A]AZUL  [V]VERMELHA  Escolha:"
+if errorlevel 2 goto :VERMELHA
+if errorlevel 1 goto :AZUL
+
+:AZUL
+goto menu
+
+:VERMELHA
+@echo off
+:a
+color 2
+echo 1 1 1 0 1 0 0 0 1 1 1 1 0 0 0 1 1 0 0 1 0 0 0 1 1 0 1 0 1 0 0 0 1 1 1 1
+ping localhost -n 1 > nul
+echo 1 1 0 1 1 1 0 0 0 1 0 1 a f h 0 0 0 1 0 1 1 0 0 1 1 1 0 0 1 0 1 0 0 1 1 0
+echo 1 0 0 1 1 0 9 8 1 2 0 1 9 9 2 1 1 1 0 0 1 0 1 1 1 0 1 1 0 1 0 0 0 1 0 1 1
+ping localhost -n 1 > nul
+echo 0 1 0 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 1 0 1 1 0 1 0 0 0 01 0 1 0 0 1 0
+ping localhost -n 1 > nul
+echo 1 0 1 1 1 0 1 1 0 9 1 1 2 1 1 0 9 1 0 5 7 7 8 7 8 1 3 2 1 2 1 2 3 2 1 3 4
+ping localhost -n 1 > nul
+echo 1 1 1 0 1 0 0 1 0 0 0 1 1 1 0 0 1 1 1 4 1 2 1 1 2 0 1 0 1 2 2 1 0 1 1 0 1
+goto a
+
+
+:OPEN1
+mode 70,37
+echo.
+echo         ___          
+echo     ..-*   `--,      
+echo    /# =-=-=-=-=`-_   
+echo   /# (--=-=-___=-=-\ 
+echo  /#   .- --.  . --.: 
+echo /##   ]  * ) (   * ),
+echo ]##   \    /\ \   / :
+echo ]###   ---   \ ---  :
+echo ]####      ___)    #:
+echo ]######           ##:
+echo  \##### ---------- / 
+echo   \####           (  
+echo   `\###          ]  
+echo     \###         ]  
+echo      \##        ]   
+echo       \###.    .)   
+echo        `-=-=-=/    
+echo.
+pause
+goto menu
+
+:OPEN2
+mode 79,32
+echo                                 _versao 1.0
+echo                              ==(W{==========-      /===-
+echo                                [   (.--.)         /---=-_---~~~~~~~----__
+echo                                [ \_,[**],__      ]===-~___            _,-'`
+echo                   -==\\        `\ ' `--'   ),    `//~\\   ~~~~`--._.-~    
+echo               ______-==[        /`\_. .__/\ \    ] ]  \\          _-~`
+echo            -~~~  ,-/-==\\      (   [ .  ]  ~~]   ] ]   `\       ,'     
+echo         __--~~~  ,-/-==\\      (   [ .  ]  ~~]   ] ]   `\       ,'     
+echo      _-~       /'    [  \\     )__/=-0--=\}{/   / /      \     /          
+echo    .'        /       [   \\      /~\___/~~\/  /' /        \   /           
+echo   /  ____  /         [    \`\.__/-~~   \  ]_/'  /          \/'            
+echo  /-'~    ~~~~~---__  [     ~-/~         ( )   /'        _--~`             
+echo                    \_[      /        _) [ ;  ),   __--~~                  
+echo                      '~~--_/      _-~/- []\   '-~ \                      
+echo                     {\__--_/}    / \\}-]){__\      \                   
+echo                     /'   (_/  _-~  ] ]__}--{__]      ]                   
+echo                    [   _/) )-~     ] ]__}--{__]      ]
+echo                    / /~ ,_/       / /__}---{__/      ]
+echo                   o-o _//        /-~_}---{__-~      /     
+echo                   (*(~          /~_}---{__-      _-~
+echo                  ,/[           /__{--{__/     _-~
+echo               ,//('(          [__}--{__]     /                  .--_
+echo              ( ( '))          [__}--{__]    ]                 /' _-_~\
+echo           `-)) )) (           [__}--{__]    ]               /'  /   ~\`\
+echo          ,/,'//( (             \__}--{__\    \            /'  //      [[
+echo        ,( ( ((, ))              ~-__}--{_~-_  ~--__---~'/'/  /'       VV
+echo      `~/  )` ) ,/]                ~-_~}--{_/-__      __-~ _/
+echo    ._-~//( )/ )) `                    ~~-'_/_/ /~~~~~__--~
+echo     ;'( ')/ ,)(                              ~~~~~~~~
+echo    ' ') '( (/
+pause
+goto menu
+
+
+:opcao17
+echo                       %ESC%[41m###########################%ESC%[0m
+echo                       %ESC%[41m#  ESTA OPCAO NAO EXISTE  #%ESC%[0m
+echo                       %ESC%[41m###########################%ESC%[0m
+pause
+goto menu
+:setESC
+for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do rem"') do (
+  set ESC=%%b
+exit /B 0
+  )
+
