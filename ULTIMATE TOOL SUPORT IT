@@ -104,28 +104,52 @@ cls
 echo.
 echo    %ESC%[42mAtivando Perfil de Administrador%ESC%[0m
 echo.
-net user administrator /active:yes
-echo.
-echo    %ESC%[42mColocando Senha Padrao%ESC%[0m
-echo.
-net user administrator "W%ker$00_t"
-echo.
-echo    %ESC%[42mConcluido!!!%ESC%[0m
+net user administrator /active:yes && goto erromsg5 || goto erromsg4
 echo.
 pause
 goto menu
 
+
+:erromsg5
+echo  %ESC%[42mAtivado Perfil de Admin com sucesso%ESC%[0m
+echo.
+net user administrator "W%ker$00_t" && goto erromsg3 || goto erromsg4
+pause
+goto menu
+
+:erromsg3
+echo  %ESC%[42mSenha Cadastrada com sucesso%ESC%[0m
+echo.
+pause
+goto menu
+
+:erromsg4
+echo  %ESC%[41malguma coisa deu errado(contate o Desenvolvedor)%ESC%[0m
+echo.
+pause
+goto menu
+
+
 :opcao2
 cls
 echo.
-echo     %ESC%[42mDesativando Perfil sesp%ESC%[0m
-echo.
-net user sesp /active:no
-echo.
-echo     %ESC%[42mPerfil Desativado Com Sucesso.%ESC%[0m
+net user administrator /active:no && goto erromsg1 || goto erromsg2
 echo.
 pause 
 goto menu
+
+:erromsg1 
+echo  %ESC%[42mPerfil Desativado Com Sucesso.%ESC%[0m
+echo.
+pause
+goto menu
+
+:erromsg2
+echo  %ESC%[41mPerfil nao foi desativado (possivelmente nome perfil errado)%ESC%[0m
+echo.
+pause
+goto menu
+
 
 :opcao3
 cls
@@ -785,7 +809,6 @@ echo * Versao: 1.0                                *
 echo * Codename:KnightRider                       *
 echo * Desenvolvedor: Luan Rodrigues Leite        *
 echo * Colaborador e Beta tester:Marcelo Moreira  *
-echo * Agradecimentos: Douglas Graciane           *
 echo ==============================================
 choice /C AB /N /M " [A] Voltar  [B]EasterEgg  Escolha:"
 if errorlevel 2 goto :SENHAS
