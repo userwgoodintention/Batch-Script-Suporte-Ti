@@ -36,16 +36,16 @@ setlocal
 call :setESC
 color 07
 cls
-echo   %ESC%[93mULTIMATE Tool Suporte TI: [Versao 1.0] LuanSoftwares(c)©  %ESC%[0m
+echo   %ESC%[93mULTIMATE Tool Suporte TI: [Versao 1.2] LuanSoftwares(c)©  %ESC%[0m
 echo.
 echo.
 :::                   ___________________
 :::                   | _______________ |               
-:::                   | |mXXXXXXXXXXXs| |
-:::                   | |XXXXXXXXXXXXX| |
-:::                   | |XXXXXXXXXXXXX| |
-:::                   | |XXXXXXXXXXXXX| |
-:::                   | |dXXXXXXXXXXos| |
+:::                   | |XXXXmsdosXXXX| |
+:::                   | |mount c c:\XX| |
+:::                   | |c:XXXXXXXXXXX| |
+:::                   | |c:cd d1mXXXXX| |
+:::                   | |setupXXXXXXXX| |
 :::                   |_________________|
 :::                       _[_______]_
 :::                   ___[___________]___
@@ -58,20 +58,19 @@ echo.
 for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
 echo         %ESC%[36m1.%ESC%[0mAtivar e Colocar Senha Padrao do Administrador.
 echo         %ESC%[36m2.%ESC%[0mDesativar o Perfil SESP.
-echo         %ESC%[36m3.%ESC%[0mExecutar Pop Sesp(64bits).
-echo         %ESC%[36m4.%ESC%[0mIp Fixo SESP.
-echo         %ESC%[36m5.%ESC%[0mExecutar Pop Sesp para PC Externo.
+echo         %ESC%[36m3.%ESC%[0mInstalar POP.
+echo         %ESC%[36m4.%ESC%[0mLista de Programas do POP(Somente Leitura).
+echo         %ESC%[36m5.%ESC%[0mIp Fixo SESP.
 echo         %ESC%[36m6.%ESC%[0mIp Fixo SEJUDH.
 echo         %ESC%[36m7.%ESC%[0mInstalar Aker(Somente SAJU,SEJUDH e FUNAC).
-echo         %ESC%[36m8.%ESC%[0mPasta temp do usuario atual.
-echo         %ESC%[36m9.%ESC%[0mVerificar ChekList de Formatacao(Somente Leitura).
-echo         %ESC%[36m10.%ESC%[0mLista de Programas(Somente leitura).
-echo         %ESC%[36m11.%ESC%[0mAtivar Windows 10(Somente Interno).
-echo         %ESC%[36m12.%ESC%[0mVerificar Configuracoes e Informacoes do PC.
-echo         %ESC%[36m13.%ESC%[0mVerificar Todos os Programas instalados no PC.
-echo         %ESC%[36m14.%ESC%[0mInstalar Softwares pela internet(Leia Documentacao!).
-echo         %ESC%[36m15.%ESC%[0mFazer Pendrive Bootavel Windows 7 mini(quebrar senha).
-echo         %ESC%[36m16.%ESC%[0mContato e Informacoes do Software.
+echo         %ESC%[36m8.%ESC%[0mLimpar pastas temporarias.
+echo         %ESC%[36m9.%ESC%[0mVerificar CheckList de Formatacao(Somente Leitura).
+echo         %ESC%[36m10.%ESC%[0mAtivar Windows 10(Somente Interno).
+echo         %ESC%[36m11.%ESC%[0mVerificar Configuracoes e Informacoes do PC.
+echo         %ESC%[36m12.%ESC%[0mVerificar Todos os Programas instalados no PC.
+echo         %ESC%[36m13.%ESC%[0mInstalar Softwares pela internet(com chocolatey).
+echo         %ESC%[36m14.%ESC%[0mFazer Pendrive Bootavel Windows 7 mini(quebrar senha).
+echo         %ESC%[36m15.%ESC%[0mContato e Informacoes do Software.
 echo.
 echo        Computador: %computername%        Usuario: %username%
 echo.
@@ -96,15 +95,16 @@ if %opcao% equ 12 goto opcao12
 if %opcao% equ 13 goto opcao13
 if %opcao% equ 14 goto opcao14
 if %opcao% equ 15 goto opcao15
-if %opcao% equ 16 goto opcao16
-if %opcao% GEQ 17 goto opcao17
+if %opcao% GEQ 16 goto opcao16
+
+
 
 :opcao1
 cls
 echo.
 echo    %ESC%[42mAtivando Perfil de Administrador%ESC%[0m
 echo.
-net user administrator /active:yes && goto erromsg5 || goto erromsg4
+net user administrador /active:yes && goto erromsg5 || goto erromsg4
 echo.
 pause
 goto menu
@@ -113,7 +113,7 @@ goto menu
 :erromsg5
 echo  %ESC%[42mAtivado Perfil de Admin com sucesso%ESC%[0m
 echo.
-net user administrator "W%ker$00_t" && goto erromsg3 || goto erromsg4
+net user administrador * && goto erromsg3 || goto erromsg4
 pause
 goto menu
 
@@ -133,7 +133,8 @@ goto menu
 :opcao2
 cls
 echo.
-net user administrator /active:no && goto erromsg1 || goto erromsg2
+SET /P PERFIL= Digite o nome do perfil ex(Sesp):
+net user %PERFIL% /active:no && goto erromsg1 || goto erromsg2
 echo.
 pause 
 goto menu
@@ -154,55 +155,79 @@ goto menu
 :opcao3
 cls
 echo.
+echo.
+echo.
+echo         %ESC%[36m1.%ESC%[0mPOP SESP INTERNO
+echo         %ESC%[36m2.%ESC%[0mPOP SESP SEM LibreOffice
+echo         %ESC%[36m3.%ESC%[0mPOP SESP EXTERNO
+echo         %ESC%[36m4.%ESC%[0mPOP POP INTERNO SEAP.    
+echo                                                   5.Sair.
+choice /C 12345 /N /M "Escolha:"
+if errorlevel 5 goto :POPSAIR
+if errorlevel 4 goto :POPSEAP
+if errorlevel 3 goto :POPE
+if errorlevel 2 goto :POPISL
+if errorlevel 1 goto :POPI
+
+:POPSAIR
+goto menu
+
+
+:POPI
+cls
+echo.
 ==================================================================
-echo   Instalando Adobe Reader    (passo 1 de 9)
+echo   Instalando Adobe Reader                (passo 1 de 9)
 ==================================================================
 start /wait msiexec /i "%~dp0\adobe\AcroRead.msi" /qn 
 
 echo.
 ==================================================================
-echo   Instalando Google Chrome   (passo 2 de 9)
+echo   Instalando Google Chrome               (passo 2 de 9)
 ================================================================== 
 
 start /wait msiexec /i "%~dp0\chrome\GoogleChromeStandaloneEnterprise64.msi" /qn
 
 echo.
 ==================================================================
-echo   Instalando Mozilla Firefox (passo 3 de 9)
+echo   Instalando Mozilla Firefox             (passo 3 de 9)
 ==================================================================
 
 start /wait msiexec /i "%~dp0\firefox\Firefox Setup 73.0.1.msi" /qn 
 
 echo.
 ==================================================================
-echo   Instalando Java            (passo 4 de 9)
+echo   Instalando java 32 e 64bits            (passo 4 de 9)
 ==================================================================
 
-start /wait msiexec /i "%~dp0\java\jre1.8.0_20264.msi" /qn 
+start /wait %~dp0/java/jre-8u241-windows-x64.exe /s INSTALLDIR=C:\java\jre64
+start /wait %~dp0/java/jre-8u241-windows-i586.exe /s INSTALLDIR=C:\java\jre86
+
 
 echo.
 ==================================================================
-echo   Instalando pdfsam-v3       (passo 5 de 9)
+echo   Instalando pdfsam-v3                   (passo 5 de 9)
 ==================================================================
 
 start /wait msiexec /i "%~dp0\pdfsam\pdfsam-v3.3.0.msi" /qn 
 
 echo.
 ==================================================================
-echo   Instalando libreoffice     (passo 6 de 9)
+echo   Instalando libreoffice com HelpPack    (passo 6 de 9)
 ==================================================================
 If not exist C:\install\logs\ md C:\install\logs\
-start /wait Msiexec /i "%~dp0\libreoffice\LibreOffice_6.4.0_Win_x64.msi" /qn /norestart ALLUSERS=1 CREATEDESKTOPLINK=0 REGISTER_ALL_MSO_TYPES=0 REGISTER_NO_MSO_TYPES=1 ISCHECKFORPRODUCTUPDATES=0 QUICKSTART=1 ADDLOCAL=ALL UI_LANGS=en_US,fr,es /l "c:\install\logs\libreoffice.log"
+start /wait %~dp0\libreoffice\LibreOffice_6.3.5_Win_x64.msi /qn ALLUSERS=1 CREATEDESKTOPLINK=1 REGISTER_ALL_MSO_TYPES=0 REGISTER_NO_MSO_TYPES=1 ISCHECKFORPRODUCTUPDATES=0 QUICKSTART=0 ADDLOCAL=ALL UI_LANGS=pt_BR 
+start /wait %~dp0\libreoffice\LibreOffice_6.3.5_Win_x64_helppack_pt-BR.msi /qn ALLUSERS=1 CREATEDESKTOPLINK=1 REGISTER_ALL_MSO_TYPES=0 REGISTER_NO_MSO_TYPES=1 ISCHECKFORPRODUCTUPDATES=0 QUICKSTART=0 ADDLOCAL=ALL UI_LANGS=pt_BR 
 
 echo.
 ==================================================================
-echo   Instalando 7-ZIP (passo 7 de 9)   
+echo   Instalando 7-ZIP                       (passo 7 de 9)   
 ==================================================================
 start /wait msiexec /i "%~dp0\7-zip\7z1900-x64.msi" /qn 
 
 echo.
 ==================================================================
-echo   Instalando TeamViewer10host (passo 8 de 9)  
+echo   Instalando TeamViewer10host            (passo 8 de 9)  
 ==================================================================
 start /wait msiexec /i "%~dp0\teamviewer\TeamViewer_Host-idc2vgck97.msi" /qn 
 
@@ -211,7 +236,7 @@ regedit /s "%~dp0\teamviewer\TeamViewer_Settings.reg"
 
 echo.
 ==================================================================
-echo   instalando  Antivirus kaspersky   (passo 9 de 9)
+echo   instalando  Antivirus kaspersky        (passo 9 de 9)
 ==================================================================
 "%~dp0\kaspersky\installer.exe"
 
@@ -223,7 +248,229 @@ echo   concluido
 pause
 goto menu
 
+
+:POPE
+cls
+echo.
+==================================================================
+echo   Instalando Adobe Reader                 (passo 1 de 8)
+==================================================================
+start /wait msiexec /i "%~dp0\adobe\AcroRead.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando Google Chrome               (passo 2 de 8)
+================================================================== 
+
+start /wait msiexec /i "%~dp0\chrome\GoogleChromeStandaloneEnterprise64.msi" /qn
+
+echo.
+==================================================================
+echo   Instalando Mozilla Firefox             (passo 3 de 8)
+==================================================================
+
+start /wait msiexec /i "%~dp0\firefox\Firefox Setup 73.0.1.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando java 32 e 64bits            (passo 4 de 9)
+==================================================================
+
+start /wait %~dp0/java/jre-8u241-windows-x64.exe /s INSTALLDIR=C:\java\jre64
+start /wait %~dp0/java/jre-8u241-windows-i586.exe /s INSTALLDIR=C:\java\jre86
+
+echo.
+==================================================================
+echo   Instalando pdfsam-v3                   (passo 5 de 8)
+==================================================================
+
+start /wait msiexec /i "%~dp0\pdfsam\pdfsam-v3.3.0.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando libreoffice com HelpPack    (passo 6 de 9)
+==================================================================
+If not exist C:\install\logs\ md C:\install\logs\
+start /wait %~dp0\libreoffice\LibreOffice_6.3.5_Win_x64.msi /qn ALLUSERS=1 CREATEDESKTOPLINK=1 REGISTER_ALL_MSO_TYPES=0 REGISTER_NO_MSO_TYPES=1 ISCHECKFORPRODUCTUPDATES=0 QUICKSTART=0 ADDLOCAL=ALL UI_LANGS=pt_BR 
+start /wait %~dp0\libreoffice\LibreOffice_6.3.5_Win_x64_helppack_pt-BR.msi /qn ALLUSERS=1 CREATEDESKTOPLINK=1 REGISTER_ALL_MSO_TYPES=0 REGISTER_NO_MSO_TYPES=1 ISCHECKFORPRODUCTUPDATES=0 QUICKSTART=0 ADDLOCAL=ALL UI_LANGS=pt_BR 
+
+echo.
+==================================================================
+echo   Instalando 7-ZIP                       (passo 7 de 8)   
+==================================================================
+start /wait msiexec /i "%~dp0\7-zip\7z1900-x64.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando TeamViewer10host            (passo 8 de 8)   
+==================================================================
+start /wait msiexec /i "%~dp0\TeamviwerExterno\TeamViewer_Host-idc2vgck97.msi" /qn 
+
+regedit /s "%~dp0\TeamviwerExterno\TeamViewer_Settings.reg" 
+
+echo.
+==================================================================
+echo   Concluido!!! 
+==================================================================
+pause
+goto menu
+
+
+:POPISL
+cls
+echo.
+==================================================================
+echo   Instalando Adobe Reader             (passo 1 de 8)
+==================================================================
+start /wait msiexec /i "%~dp0\adobe\AcroRead.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando Google Chrome            (passo 2 de 8)
+================================================================== 
+
+start /wait msiexec /i "%~dp0\chrome\GoogleChromeStandaloneEnterprise64.msi" /qn
+
+echo.
+==================================================================
+echo   Instalando Mozilla Firefox          (passo 3 de 8)
+==================================================================
+
+start /wait msiexec /i "%~dp0\firefox\Firefox Setup 73.0.1.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando java 32 e 64bits         (passo 4 de 8)
+==================================================================
+
+start /wait %~dp0/java/jre-8u241-windows-x64.exe /s INSTALLDIR=C:\java\jre64
+start /wait %~dp0/java/jre-8u241-windows-i586.exe /s INSTALLDIR=C:\java\jre86
+
+echo.
+==================================================================
+echo   Instalando pdfsam-v3                (passo 5 de 8)
+==================================================================
+
+start /wait msiexec /i "%~dp0\pdfsam\pdfsam-v3.3.0.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando 7-ZIP                    (passo 6 de 8)   
+==================================================================
+start /wait msiexec /i "%~dp0\7-zip\7z1900-x64.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando TeamViewer10host            (passo 7 de 8)  
+==================================================================
+start /wait msiexec /i "%~dp0\teamviewer\TeamViewer_Host-idc2vgck97.msi" /qn 
+
+regedit /s "%~dp0\teamviewer\TeamViewer_Settings.reg"
+
+echo.
+==================================================================
+echo   instalando  Antivirus kaspersky        (passo 8 de 8)
+==================================================================
+"%~dp0\kaspersky\installer.exe"
+
+echo.
+==================================================================
+echo   Concluido!!! 
+==================================================================
+pause
+goto menu
+
+:POPSEAP
+cls
+echo.
+==================================================================
+echo   Instalando Adobe Reader              (passo 1 de 8)
+==================================================================
+start /wait msiexec /i "%~dp0\adobe\AcroRead.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando Google Chrome             (passo 2 de 8)
+================================================================== 
+
+start /wait msiexec /i "%~dp0\chrome\GoogleChromeStandaloneEnterprise64.msi" /qn
+
+echo.
+==================================================================
+echo   Instalando Mozilla Firefox           (passo 3 de 8)
+==================================================================
+
+start /wait msiexec /i "%~dp0\firefox\Firefox Setup 73.0.1.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando java 32 e 64bits          (passo 4 de 9)
+==================================================================
+
+start /wait %~dp0/java/jre-8u66-windows-i586-SEAP.exe /s INSTALLDIR=C:\java\jre64
+start /wait %~dp0/java/jre-8u66-windows-x64-SEAP.exe /s INSTALLDIR=C:\java\jre86
+
+echo.
+==================================================================
+echo   Instalando pdfsam-v3                 (passo 5 de 8)
+==================================================================
+
+start /wait msiexec /i "%~dp0\pdfsam\pdfsam-v3.3.0.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando libreoffice com HelpPack  (passo 6 de 9)
+==================================================================
+If not exist C:\install\logs\ md C:\install\logs\
+start /wait %~dp0\libreoffice\LibreOffice_6.3.5_Win_x64.msi /qn ALLUSERS=1 CREATEDESKTOPLINK=1 REGISTER_ALL_MSO_TYPES=0 REGISTER_NO_MSO_TYPES=1 ISCHECKFORPRODUCTUPDATES=0 QUICKSTART=0 ADDLOCAL=ALL UI_LANGS=pt_BR 
+start /wait %~dp0\libreoffice\LibreOffice_6.3.5_Win_x64_helppack_pt-BR.msi /qn ALLUSERS=1 CREATEDESKTOPLINK=1 REGISTER_ALL_MSO_TYPES=0 REGISTER_NO_MSO_TYPES=1 ISCHECKFORPRODUCTUPDATES=0 QUICKSTART=0 ADDLOCAL=ALL UI_LANGS=pt_BR 
+
+echo.
+==================================================================
+echo   Instalando 7-ZIP                     (passo 7 de 8)   
+==================================================================
+start /wait msiexec /i "%~dp0\7-zip\7z1900-x64.msi" /qn 
+
+echo.
+==================================================================
+echo   Instalando TeamViewer10host          (passo 8 de 9)  
+==================================================================
+start /wait msiexec /i "%~dp0\teamviewer\TeamViewer_Host-idc2vgck97.msi" /qn 
+
+regedit /s "%~dp0\teamviewer\TeamViewer_Settings.reg"
+
+echo.
+==================================================================
+echo   instalando  Antivirus kaspersky      (passo 9 de 9)
+==================================================================
+"%~dp0\kaspersky\installer.exe"
+
+echo.
+==================================================================
+echo   Concluido!!! 
+==================================================================
+pause
+goto menu
+
+
 :opcao4
+echo ----------------------------------------------
+echo # Adobe Reader 11.0.23                       #
+echo # Google Chrome Stand alone Enterprise       #
+echo # Mozilla Firefox 73.0.1                     #
+echo # jre-8u241-windows-x64                      #
+echo # jre-8u241-windows-i586                     #
+echo # jre-8u66-windows-x64-SEAP                  #
+echo # jre-8u66-windows-i586-SEAP                 #
+echo # 7-ZIP 19.00  (similar ao Winrar)           #
+echo # LibreOffice_6.3.5 com help pack            #
+echo # Team Viewer 10 host e Script               #
+echo # Kaspersky (popsesp)                        #
+echo ---------------------------------------------- 
+pause
+goto menu
+
+:opcao5
 @echo off
 set INTERFACE=Ethernet
 set IP=172.17.0.248
@@ -250,70 +497,6 @@ goto CONFIRMAR
 :FIM
 goto menu
 
-
-:opcao5
-cls
-echo.
-==================================================================
-echo   Instalando Adobe Reader    (passo 1 de 8)
-==================================================================
-start /wait msiexec /i "%~dp0\adobe\AcroRead.msi" /qn 
-
-echo.
-==================================================================
-echo   Instalando Google Chrome   (passo 2 de 8)
-================================================================== 
-
-start /wait msiexec /i "%~dp0\chrome\GoogleChromeStandaloneEnterprise64.msi" /qn
-
-echo.
-==================================================================
-echo   Instalando Mozilla Firefox (passo 3 de 8)
-==================================================================
-
-start /wait msiexec /i "%~dp0\firefox\Firefox Setup 73.0.1.msi" /qn 
-
-echo.
-==================================================================
-echo   Instalando Java            (passo 4 de 8)
-==================================================================
-
-start /wait msiexec /i "%~dp0\java\jre1.8.0_20264.msi" /qn 
-
-echo.
-==================================================================
-echo   Instalando pdfsam-v3       (passo 5 de 8)
-==================================================================
-
-start /wait msiexec /i "%~dp0\pdfsam\pdfsam-v3.3.0.msi" /qn 
-
-echo.
-==================================================================
-echo   Instalando libreoffice     (passo 6 de 8)
-==================================================================
-If not exist C:\install\logs\ md C:\install\logs\
-start /wait Msiexec /i "%~dp0\libreoffice\LibreOffice_6.4.0_Win_x64.msi" /qn /norestart ALLUSERS=1 CREATEDESKTOPLINK=0 REGISTER_ALL_MSO_TYPES=0 REGISTER_NO_MSO_TYPES=1 ISCHECKFORPRODUCTUPDATES=0 QUICKSTART=1 ADDLOCAL=ALL UI_LANGS=en_US,fr,es /l "c:\install\logs\libreoffice.log"
-
-echo.
-==================================================================
-echo   Instalando 7-ZIP (passo 7 de 8)   
-==================================================================
-start /wait msiexec /i "%~dp0\7-zip\7z1900-x64.msi" /qn 
-
-echo.
-==================================================================
-echo   Instalando TeamViewer10host (passo 8 de 8) quase lá...  
-==================================================================
-start /wait msiexec /i "%~dp0\TeamviwerExterno\TeamViewer_Host-idc2vgck97.msi" /qn 
-
-regedit /s "%~dp0\teamviewer\TeamViewer_Settings.reg" 
-
-echo.
-==================================================================
-echo   Concluido!!! 
-==================================================================
-pause
-goto menu
 
 
 
@@ -352,35 +535,31 @@ goto menu
 
 :opcao8
 cls
-IF EXIST c:\windows\temp\ del /f /s /q c:\windows\temp\
-DEL /f /s /q %temp%\
-IF EXIST “C:\Documents and Settings\” (
-for /D %%x in (“C:\Documents and Settings\*”) do (
-rmdir /s /q “%%x\Local Settings\Temporary Internet Files”
-mkdir “%%x\Local Settings\Temporary Internet Files”
-)
-)
-IF EXIST “C:\Documents and Settings\” (
-for /D %%x in (“C:\Documents and Settings\*”) do (
-rmdir /s /q “%%x\Local Settings\Temp”
-mkdir “%%x\Local Settings\Temp”
-)
-)
-IF EXIST “C:\Users\” (
-for /D %%x in (“C:\Users\*”) do (
-rmdir /s /q “%%x\AppData\Local\Temp”
-mkdir “%%x\AppData\Local\Temp”
-)
-)
-IF EXIST “C:\Users\” (
-for /D %%x in (“C:\Users\*”) do (
-rmdir /s /q “%%x\AppData\Local\Microsoft\Windows\Temporary Internet Files”
-mkdir “%%x\AppData\Local\Microsoft\Windows\Temporary Internet Files”
-)
-)
+cleanmgr.exe /sagerun:n && goto erromsg6 || goto erromsg9
+
+:erromsg6
+echo.
+echo   %ESC%[42mLimpado Arquivos Temporarios da internet.%ESC%[0m
+del /s /f /q C:\Windows\Temp\*.* && goto erromsg7 || goto erromsg9
+
+
+:erromsg7
+echo.
+echo   %ESC%[42mLimpado Arquivos Temporarios do Sistema.%ESC%[0m
+del /f /q C:\Users\%username%\AppData\Local\temp && goto erromsg8|| goto erromsg9
+
+
+:erromsg8
+echo.
+echo   %ESC%[42mLimpado Arquivos Temporarios do Usuario.%ESC%[0m
 pause
 goto menu
 
+:erromsg9
+echo.
+echo   ESC%[41m Deu Algo errado nao esta certo %ESC%[0m
+pause
+goto menu
 
 
 :opcao9
@@ -427,7 +606,7 @@ echo *
 echo *
 echo *   obs: caso seja necessario fazer uma limpeza fisica.
 echo *
-echo *   como fazer mapeamento de pasta compartilhada;
+echo *   como fazer mapeamento de pasta compartilhada:
 echo *
 echo *   1 abrir executar e digitar \\saens-nas
 echo *   2 abrir o cmd e digitar start \\saens-nas
@@ -435,7 +614,7 @@ echo *   3 clica na pasta solicitada e com botao direito e seleciona conectar
 echo *    
 echo * 
 echo *
-echo *   como mapear impressora em rede 
+echo *   como mapear impressora em rede: 
 echo *
 echo *   1 abrir executar e digitar \\ssp-srv-prt2
 echo *   2 abrir o cmd e digitar start \\ssp-srv-prt2
@@ -446,22 +625,10 @@ pause
 goto menu
 
 
+
+
+
 :opcao10
-echo ----------------------------------------------
-echo # Adobe Reader 11.0.23                       #
-echo # Google Chrome Stand alone Enterprise       #
-echo # Mozilla Firefox 73.0.1                     #
-echo # Java 1.8.0_20264                           #
-echo # 7-ZIP 19.00  (similar ao Winrar)           #
-echo # LibreOffice_6.0.4                          #
-echo # Team Viewer 10 host e Script               #
-echo # Kaspersky (popsesp)                        #
-echo ---------------------------------------------- 
-pause
-goto menu
-
-
-:opcao11
 @echo off
 fltmc >nul 2>&1 || (
   echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\GetAdmin.vbs"
@@ -751,19 +918,19 @@ GOTO MAINMENU
 ::===============================================================================================================
 goto menu
 
-:opcao12
+:opcao11
 mode 110,55
 systeminfo
 pause
 goto menu
 
-:opcao13
+:opcao12
 mode 110,55
 wmic product get name
 pause
 goto menu
 
-:opcao14
+:opcao13
 ECHO OFF 
 mode 110,50
 echo [A] Instalar a Aplicacao Chocolatey(precisa reiniciar o pc).
@@ -791,24 +958,35 @@ goto menu
 :CHOCOSAIR
 goto menu
 
-:opcao15
+:opcao14
+echo Sera necessario um Pendrive que podera ser formatado!!
+echo Deseja continuar?
+choice /C SN /N /M " [S] SIM  [N]NAO  Escolha:"
+if errorlevel 2 goto :bootoff
+if errorlevel 1 goto :booton
+
+:booton
 echo (ATENCAO!!! esse comando vai formatar o Pendrive em NTFS)
 SET /P USB= Digite e letra do Diretorio USB (C:, D:, E: etc):
 format %USB%: /FS:NTFS /X /Q
 XCOPY %~dp0\miniwin7 "%USB%:\" /c /g /d /i /e /h /-y
-echo pendrive Bootavel criado com sucesso.
+echo %ESC%[42mpendrive Bootavel criado com sucesso.%ESC%[0m
 pause
 goto menu
 
-:opcao16
+:bootoff
+goto menu
+
+:opcao15
 echo off
 echo ==============================================
 echo * Para Duvidas e Sugestoes segue o contato:  *
-echo * Email:luanrodriguesleite@gmai.com          *
+echo * Email:luanrodriguesleite@gmail.com         *
 echo * Versao: 1.0                                *
 echo * Codename:KnightRider                       *
 echo * Desenvolvedor: Luan Rodrigues Leite        *
 echo * Colaborador e Beta tester:Marcelo Moreira  *
+echo * Agradecimentos: Douglas Graciani           *
 echo ==============================================
 choice /C AB /N /M " [A] Voltar  [B]EasterEgg  Escolha:"
 if errorlevel 2 goto :SENHAS
@@ -818,93 +996,44 @@ if errorlevel 1 goto :MENUP
 goto menu
 ::===========================================================================
 :SENHAS
-set Password1=showmewhatyougot
+
 set Password2=KnightRider
 set Password3=knightrider
 set Password4=matrix
-set Password5=karla
-set Password6=ariel
-set Password7=samaris
+set Password5=snake
+set Password6=msdos
+set Password7=MSDOS
 goto CHECK
 
 :CHECK
 echo EasterEgg
 set /p pass="Password=> "
-if %pass%==%Password1% goto OPEN1
 if %pass%==%Password2% goto OPEN2
 if %pass%==%Password3% goto OPEN2
 if %pass%==%Password4% goto OPEN4
 if %pass%==%Password5% goto OPEN5
 if %pass%==%Password6% goto OPEN6
-if %pass%==%Password7% goto OPEN7
-If NOT %pass%==%Password1%%Password2%%Password3%%Password4%%Password5%%Password6%%Password7% goto FAIL
+if %pass%==%Password7% goto OPEN6
+If NOT %pass%==%Password2%%Password3%%Password4%%Password5%%Password6%%Password7% goto FAIL
 goto END
 
-:OPEN7
-mode 67,26
-echo.
-echo  ___________________________________________________
-echo  [ http:\\www.roupas.com.br                        ] 
-echo  [_________________________________________________]
-echo  [                                                 ]
-echo  [                                                 ]
-echo  [  /] ]\         [   ]         [   ]              ]
-echo  [ ( \./ )       ( \ / )       (.\ /.)             ]
-echo  [  \ : /         \\*//         \   /              ]
-echo  [  ) : (         ))*((         ) . (              ]
-echo  [ /  :  \       ///[\\\       /  v  \             ]
-echo  [ [__:__[       ////[\\\     /.......\            ]   
-echo  [  R$100        R$150          R$200              ]
-echo  [                                                 ]
-echo  [_________________________________________________]
-echo.
-pause
-goto menu
-
-
 :OPEN6
-mode 70,37
-echo.
-echo                    _
-echo                ,='' `''=,       o
-echo               /   ,=='''-;        , __
-echo       ~      /      ,--'/=,)  o    \`\\'._     -,
-echo             ]   .='/ }0(0.=''       / _  ]]];._//)
-echo            /     (J    ^\ \     o_/@ @  ///  ]=(
-echo          .'    .' \  '='/  '-.  ( (`__,     ,`\]
-echo         /     /    \`-;_      \  '.\_/ ]\_.'
-echo    ~   /      ]   /` _  \      )   `''```
-echo       /  ],   ;  /`\/ `\ \    /.-._///_
-echo       ]/     '   \_,\__/\ \.-'.'----'`
-echo        \]     '.   \     \   /`-,   ~
-echo          `\     _.-'\    (`-`  .'
-echo            `-.-' _.-')__./,--'
-echo         .--'`,-'`'''`    ` \
-echo        /`'`-`               ]          ~
-echo       ]                     /
-echo    ~  ]     .-'__         .'
-echo        \   ;''`  `'''----'`
-echo         \   \
-echo          '.  `\
-echo            )   `-.            ~
-echo           /       `-._
-echo          ]     ,      `-,
-echo       ~  \   .' `''----`
-echo           `.(
-echo.`
-echo.
-echo.
-pause
+XCOPY %~dp0\msdos C:\ /c /g /d /i /e /h /-y
+
+"%~dp0\dosbox\DOSBox.exe"
 goto menu
+
+
 
 :OPEN5
-start %~dp0/snake.cmd
+start %~dp0/dosbox\snake.cmd
 goto menu
 :FAIL
-cls
-echo Errou IRMAO
+echo.
+echo.
+echo         %ESC%[41mERROU IRMAO%ESC%[0m
 pause
-goto opcao8
+goto opcao15
 
 :OPEN4
 echo       Tome a Pilula AZUL volte a vida para o normal.
@@ -922,40 +1051,15 @@ goto menu
 color 2
 echo 1 1 1 0 1 0 0 0 1 1 1 1 0 0 0 1 1 0 0 1 0 0 0 1 1 0 1 0 1 0 0 0 1 1 1 1
 ping localhost -n 1 > nul
-echo 1 1 0 1 1 1 0 0 0 1 0 1 a f h 0 0 0 1 0 1 1 0 0 1 1 1 0 0 1 0 1 0 0 1 1 0
+echo 1 1 0 1 1 1 0 0 0 1 0 1 0 1 2 0 0 0 1 0 1 1 0 0 1 1 1 0 0 1 0 1 0 0 1 1 0
 echo 1 0 0 1 1 0 9 8 1 2 0 1 9 9 2 1 1 1 0 0 1 0 1 1 1 0 1 1 0 1 0 0 0 1 0 1 1
 ping localhost -n 1 > nul
-echo 0 1 0 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 1 0 1 1 0 1 0 0 0 01 0 1 0 0 1 0
+echo 0 1 0 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 1 0 1 1 0 1 0 0 0 0 1 0 1 0 0 1 0
 ping localhost -n 1 > nul
 echo 1 0 1 1 1 0 1 1 0 9 1 1 2 1 1 0 9 1 0 5 7 7 8 7 8 1 3 2 1 2 1 2 3 2 1 3 4
 ping localhost -n 1 > nul
 echo 1 1 1 0 1 0 0 1 0 0 0 1 1 1 0 0 1 1 1 4 1 2 1 1 2 0 1 0 1 2 2 1 0 1 1 0 1
 goto a
-
-
-:OPEN1
-mode 70,37
-echo.
-echo         ___          
-echo     ..-*   `--,      
-echo    /# =-=-=-=-=`-_   
-echo   /# (--=-=-___=-=-\ 
-echo  /#   .- --.  . --.: 
-echo /##   ]  * ) (   * ),
-echo ]##   \    /\ \   / :
-echo ]###   ---   \ ---  :
-echo ]####      ___)    #:
-echo ]######           ##:
-echo  \##### ---------- / 
-echo   \####           (  
-echo   `\###          ]  
-echo     \###         ]  
-echo      \##        ]   
-echo       \###.    .)   
-echo        `-=-=-=/    
-echo.
-pause
-goto menu
 
 :OPEN2
 mode 79,32
@@ -993,7 +1097,7 @@ pause
 goto menu
 
 
-:opcao17
+:opcao16
 echo                       %ESC%[41m###########################%ESC%[0m
 echo                       %ESC%[41m#  ESTA OPCAO NAO EXISTE  #%ESC%[0m
 echo                       %ESC%[41m###########################%ESC%[0m
