@@ -57,12 +57,12 @@ echo.
 :::
 for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
 echo         %ESC%[36m1.%ESC%[0mAtivar e Colocar Senha Padrao do Administrador.
-echo         %ESC%[36m2.%ESC%[0mDesativar o Perfil SESP.
+echo         %ESC%[36m2.%ESC%[0mDesativar o Perfil.
 echo         %ESC%[36m3.%ESC%[0mInstalar POP.
 echo         %ESC%[36m4.%ESC%[0mLista de Programas do POP(Somente Leitura).
-echo         %ESC%[36m5.%ESC%[0mIp Fixo SESP.
-echo         %ESC%[36m6.%ESC%[0mIp Fixo SEJUDH.
-echo         %ESC%[36m7.%ESC%[0mInstalar Aker(Somente SAJU,SEJUDH e FUNAC).
+echo         %ESC%[36m5.%ESC%[0mIp Fixo 1.
+echo         %ESC%[36m6.%ESC%[0mIp Fixo 2.
+echo         %ESC%[36m7.%ESC%[0mInstalar programa separado.
 echo         %ESC%[36m8.%ESC%[0mLimpar pastas temporarias.
 echo         %ESC%[36m9.%ESC%[0mVerificar CheckList de Formatacao(Somente Leitura).
 echo         %ESC%[36m10.%ESC%[0mAtivar Windows 10(Somente Interno).
@@ -133,7 +133,7 @@ goto menu
 :opcao2
 cls
 echo.
-SET /P PERFIL= Digite o nome do perfil ex(Sesp):
+SET /P PERFIL= Digite o nome do perfil ex(Admin):
 net user %PERFIL% /active:no && goto erromsg1 || goto erromsg2
 echo.
 pause 
@@ -157,10 +157,10 @@ cls
 echo.
 echo.
 echo.
-echo         %ESC%[36m1.%ESC%[0mPOP SESP INTERNO
-echo         %ESC%[36m2.%ESC%[0mPOP SESP SEM LibreOffice
-echo         %ESC%[36m3.%ESC%[0mPOP SESP EXTERNO
-echo         %ESC%[36m4.%ESC%[0mPOP POP INTERNO SEAP.    
+echo         %ESC%[36m1.%ESC%[0mProgramas principais completos
+echo         %ESC%[36m2.%ESC%[0mProgramas principais completos SEM LibreOffice
+echo         %ESC%[36m3.%ESC%[0mProgramas principais completos EXTERNO
+echo         %ESC%[36m4.%ESC%[0mProgramas principais completos SEAP.    
 echo                                                   5.Sair.
 choice /C 12345 /N /M "Escolha:"
 if errorlevel 5 goto :POPSAIR
@@ -473,11 +473,11 @@ goto menu
 :opcao5
 @echo off
 set INTERFACE=Ethernet
-set IP=172.17.0.248
-set MASCARA=255.255.252.0
-set GATEWAY=172.17.0.1
-set DNS=172.16.5.100
-set DNS2=172.16.5.240
+set IP=
+set MASCARA=
+set GATEWA
+set DNS=
+set DNS2=
 :CONFIRMAR
 rem opções
 choice /C FAC /M "Pressione: [F]ixo, [A]utomatico ou [C]ancelar"
@@ -503,11 +503,11 @@ goto menu
 :opcao6
 @echo off
 set INTERFACE=Ethernet
-set IP=10.23.1.101
-set MASCARA=255.255.0.0
-set GATEWAY=10.23.9.11
-set DNS=10.23.1.10
-set DNS2=10.23.6.10
+set IP=
+set MASCARA=
+set GATEWAY=
+set DNS=
+set DNS2=
 :CONFIRMAR
 rem opções
 choice /C FAC /M "Pressione: [F]ixo, [A]utomatico ou [C]ancelar"
@@ -572,33 +572,23 @@ echo *   e verificar se tem backup (EXTREMA IMPORTANCIA)
 echo * 
 echo * 1 ativar administrador e colocar a senha de Administrador
 echo * 2 instalar programas padrao:
-echo *   adobe reader e sua atualizacao
-echo *   chrome(deixar navegador padrao)
-echo *   java
-echo *  
-echo *   libreoffice
-echo *   office(se tiver licenca)
-echo *   teamviewer HOST (externo com script)
-echo *   winrar
+echo *   
 echo *
 echo * 3 colocar nome da maquina e colocar maquina no dominio
 echo *   atalho: windows+ pausebreak
-echo *   dominio sesp: seguranca.local
+echo *   dominio
 echo *   e trocar nome da maquina
 echo *
 echo * 4 instalar programas que precisam da internet
 echo *   firefox
-echo *   instalar kaspersky mais atualizado
+echo *   instalar Antivirus mais atualizado
 echo *
 echo * 5 instalar drivers(precisa de internet)
 echo *   usar programa DRIVER BOOSTER(desabilitar opcao de instalar o opera) ou
 echo *   ir no gerenciador de dispositivos(atalho: windows + pausebreak) e atualizar os driver 
 echo *
 echo * 6 ativar o windows
-echo *   abrir a pasta (Windows.10.Digital.Activation.CMD)
-echo *   iniciar o arquivo (Windows_10_Digital_Activation)
-echo *   clicar numero 1 para ativar.
-echo *   clicar numero 2 para ver se ativou. verifica msg (A maquina esta ativada permanentemente.)
+echo *   
 echo *
 echo * 7 voltar o backup para o disco local (C);
 echo *
@@ -608,16 +598,16 @@ echo *   obs: caso seja necessario fazer uma limpeza fisica.
 echo *
 echo *   como fazer mapeamento de pasta compartilhada:
 echo *
-echo *   1 abrir executar e digitar \\saens-nas
-echo *   2 abrir o cmd e digitar start \\saens-nas
+echo *   1 abrir executar e digitar \\pasta compartilhada
+echo *   2 abrir o cmd e digitar start \\pasta compartilhada
 echo *   3 clica na pasta solicitada e com botao direito e seleciona conectar
 echo *    
 echo * 
 echo *
 echo *   como mapear impressora em rede: 
 echo *
-echo *   1 abrir executar e digitar \\ssp-srv-prt2
-echo *   2 abrir o cmd e digitar start \\ssp-srv-prt2
+echo *   1 abrir executar e digitar \\servidor de impressao
+echo *   2 abrir o cmd e digitar start \\servidor de impressao
 echo *   3 clica na impressora  solicitada e com botao direito e seleciona conectar
 echo *
 echo ==============================================
@@ -660,11 +650,36 @@ echo.  :================================================================:
 choice /C:123 /N /M "ESCOLHA : "
 if errorlevel 3 goto :Sair
 if errorlevel 2 goto :Check
-if errorlevel 1 goto :HWIDActivate
+if errorlevel 1 goto :Ativar
 
 ::===========================================================================
 
+:Sair
+goto menu
+::===========================================================================
+:Ativar
 
+
+
+::=====================================================================================
+:Check
+cd /d "%~dp0" && ( if exist "%temp%\getadmin.vbs" del "%temp%\getadmin.vbs" ) && fsutil dirty query %systemdrive% 1>nul 2>nul || (  cmd /u /c echo Set UAC = CreateObject^("Shell.Application"^) : UAC.ShellExecute "cmd.exe", "/k cd ""%~sdp0"" && ""%~s0""", "", "runas", 1 >> "%temp%\getadmin.vbs" && "%temp%\getadmin.vbs" && exit /B )
+CLS
+mode con cols=70 lines=40
+ECHO ************************************************************
+ECHO ***                   Windows Status                     ***
+ECHO ************************************************************
+cscript //nologo %systemroot%\System32\slmgr.vbs /dli
+cscript //nologo %systemroot%\System32\slmgr.vbs /xpr
+ECHO ____________________________________________________________
+)
+echo.
+echo Pressione qualquer tecla para continuar...
+pause >nul
+CLS
+mode con cols=60 lines=25
+GOTO MAINMENU
+::===============================================================================================================
 goto menu
 
 :opcao11
@@ -805,8 +820,7 @@ echo 0 1 0 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 1 0 1 1 0 1 0 0 0 0 1 0 1 0 0 1 0
 ping localhost -n 1 > nul
 echo 1 0 1 1 1 0 1 1 0 9 1 1 2 1 1 0 9 1 0 5 7 7 8 7 8 1 3 2 1 2 1 2 3 2 1 3 4
 ping localhost -n 1 > nul
-echo 1 1 1 0 1 0 0 1 0 0 0 1 1 1 0 0 1 1 1 4 1 2 1 1 2 0 1 0 1 2 2 1 0 1 1 0 1
-goto a
+echo 1 1 1 0 1 0 0 1 0 0 0 1 1 1 0 0 1 1 1 4 1 2 1 1 2 0 1 0 1 2 2 1 0 1 
 
 :OPEN2
 mode 79,32
