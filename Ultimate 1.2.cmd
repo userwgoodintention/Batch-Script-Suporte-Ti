@@ -65,7 +65,7 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
   echo         %ESC%[36m7.%ESC%[0mInstalar programa separado.
   echo         %ESC%[36m8.%ESC%[0mLimpar pastas temporarias.
   echo         %ESC%[36m9.%ESC%[0mVerificar CheckList de Formatacao(Somente Leitura).
-  echo         %ESC%[36m10.%ESC%[0mAtivar Windows 10(Somente Interno).
+  echo         %ESC%[36m10.%ESC%[0mAtivar Windows 10(PRECISA DE CHAVE).
   echo         %ESC%[36m11.%ESC%[0mVerificar Configuracoes e Informacoes do PC.
   echo         %ESC%[36m12.%ESC%[0mVerificar Todos os Programas instalados no PC.
   echo         %ESC%[36m13.%ESC%[0mInstalar Softwares pela internet(com chocolatey).
@@ -475,9 +475,13 @@ set DNS2=%DNS2%
   goto menu
   ::===========================================================================
   :Ativar
-  COLOQUE AQUI SEU Codigo
-
-
+  echo.
+  SET /P CHAVE= DIGITE A SUA CHAVE DE ATIVACAO DO WINDOWS 10 ex:(XXX23-33346-54235-6366-52344)
+  cscript slmr.vbs /ipk %CHAVE%
+  cscript slmr.vbs /skms.lotro.cc
+  cscript slmgr.vbs /ato
+  pause
+  goto menu
   ::=====================================================================================
   :Check
   cd /d "%~dp0" && ( if exist "%temp%\getadmin.vbs" del "%temp%\getadmin.vbs" ) && fsutil dirty query %systemdrive% 1>nul 2>nul || (  cmd /u /c echo Set UAC = CreateObject^("Shell.Application"^) : UAC.ShellExecute "cmd.exe", "/k cd ""%~sdp0"" && ""%~s0""", "", "runas", 1 >> "%temp%\getadmin.vbs" && "%temp%\getadmin.vbs" && exit /B )
