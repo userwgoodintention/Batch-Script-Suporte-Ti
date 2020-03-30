@@ -59,13 +59,13 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
   echo         %ESC%[36m1.%ESC%[0mAtivar e Colocar Senha Padrao do Administrador.
   echo         %ESC%[36m2.%ESC%[0mDesativar o Perfil.
   echo         %ESC%[36m3.%ESC%[0mInstalar Programas silenciosamente.
-  echo         %ESC%[36m4.%ESC%[0mLista de Programas do POP(Somente Leitura).
+  echo         %ESC%[36m4.%ESC%[0mLista de Programas que serao instalados.
   echo         %ESC%[36m5.%ESC%[0mIp Fixo 1.
   echo         %ESC%[36m6.%ESC%[0mIp Fixo 2.
   echo         %ESC%[36m7.%ESC%[0mInstalar programa separado.
   echo         %ESC%[36m8.%ESC%[0mLimpar pastas temporarias.
   echo         %ESC%[36m9.%ESC%[0mVerificar CheckList de Formatacao(Somente Leitura).
-  echo         %ESC%[36m10.%ESC%[0mAtivar Windows 10(PRECISA DE CHAVE).
+  echo         %ESC%[36m10.%ESC%[0mAtivar Windows 10(Precisa de chave).
   echo         %ESC%[36m11.%ESC%[0mVerificar Configuracoes e Informacoes do PC.
   echo         %ESC%[36m12.%ESC%[0mVerificar Todos os Programas instalados no PC.
   echo         %ESC%[36m13.%ESC%[0mInstalar Softwares pela internet(com chocolatey).
@@ -99,9 +99,9 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
   :opcao1
   cls
   echo.
-  echo    %ESC%[42mAtivando Perfil de Administrador%ESC%[0m
+  echo    %ESC%[43mAtivando Perfil%ESC%[0m
   echo.
-  SET /P PERFIL1= Digite o nome do perfil ex(Administrador ou Administrator):
+  SET /P PERFIL1= Digite o nome do perfil ex(Administrador):
 net user %PERFIL1% /active:yes && goto erromsg5 || goto erromsg4
 echo.
 pause
@@ -131,7 +131,9 @@ goto menu
 :opcao2
 cls
 echo.
-SET /P PERFIL= Digite o nome do perfil ex(Admin):
+echo    %ESC%[43mDesativando Perfil%ESC%[0m
+echo.
+SET /P PERFIL= Digite o nome do perfil ex(Convidado):
 net user %PERFIL% /active:no && goto erromsg1 || goto erromsg2
 echo.
 pause
@@ -155,15 +157,11 @@ cls
 echo.
 echo.
 echo.
-echo         %ESC%[36m1.%ESC%[0mProgramas Instalar programas principais silenciosamente
-echo         %ESC%[36m2.%ESC%[0mProgramas Coloque aqui sua edicao
-echo         %ESC%[36m3.%ESC%[0mProgramas Coloque aqui sua edicao
-echo         %ESC%[36m4.%ESC%[0mProgramas Coloque aqui sua edicao
-echo                                                   5.Sair.
+echo         %ESC%[36m1.%ESC%[0mInstalar programas principais silenciosamente
+echo         %ESC%[36m2.%ESC%[0mLista de Programas
+echo                                                   3.Sair.
 choice /C 12345 /N /M "Escolha:"
-if errorlevel 5 goto :POPSAIR
-if errorlevel 4 goto :INSTALL4
-if errorlevel 3 goto :INSTALL3
+if errorlevel 3 goto :POPSAIR
 if errorlevel 2 goto :INSTALL2
 if errorlevel 1 goto :INSTALL1
 
@@ -177,29 +175,29 @@ echo.
 ==================================================================
 echo   Instalando Adobe Reader                (passo 1 de 9)
 ==================================================================
-start /wait msiexec /i "%~dp0\adobe\AcroRead.msi" /qn
+start /wait msiexec /i "%~dp0\ProgramasSilent\adobe\AcroRead.msi" /qn
 
 echo.
 ==================================================================
 echo   Instalando Google Chrome               (passo 2 de 9)
 ==================================================================
 
-start /wait msiexec /i "%~dp0\chrome\GoogleChromeStandaloneEnterprise64.msi" /qn
+start /wait msiexec /i "%~dp0\ProgramasSilent\chrome\GoogleChromeStandaloneEnterprise64.msi" /qn
 
 echo.
 ==================================================================
-echo   Instalando Mozilla Firefox             (passo 3 de 9)
+echo   Instalando Mozilla Firefox             (passo 3 de 9)ProgramasSilent\
 ==================================================================
 
-start /wait msiexec /i "%~dp0\firefox\Firefox Setup 73.0.1.msi" /qn
+start /wait msiexec /i "%~dp0\ProgramasSilent\firefox\Firefox Setup 73.0.1.msi" /qn
 
 echo.
 ==================================================================
 echo   Instalando java 32 e 64bits            (passo 4 de 9)
 ==================================================================
 
-start /wait %~dp0/java/jre-8u241-windows-x64.exe /s INSTALLDIR=C:\java\jre64
-start /wait %~dp0/java/jre-8u241-windows-i586.exe /s INSTALLDIR=C:\java\jre86
+start /wait %~dp0/ProgramasSilent\java/jre-8u241-windows-x64.exe /s INSTALLDIR=C:\java\jre64
+start /wait %~dp0/ProgramasSilent\java/jre-8u241-windows-i586.exe /s INSTALLDIR=C:\java\jre86
 
 
 echo.
@@ -207,36 +205,36 @@ echo.
 echo   Instalando pdfsam-v3                   (passo 5 de 9)
 ==================================================================
 
-start /wait msiexec /i "%~dp0\pdfsam\pdfsam-v3.3.0.msi" /qn
+start /wait msiexec /i "%~dp0\ProgramasSilent\pdfsam\pdfsam-v3.3.0.msi" /qn
 
 echo.
 ==================================================================
 echo   Instalando libreoffice com HelpPack    (passo 6 de 9)
 ==================================================================
 If not exist C:\install\logs\ md C:\install\logs\
-start /wait %~dp0\libreoffice\LibreOffice_6.3.5_Win_x64.msi /qn ALLUSERS=1 CREATEDESKTOPLINK=1 REGISTER_ALL_MSO_TYPES=0 REGISTER_NO_MSO_TYPES=1 ISCHECKFORPRODUCTUPDATES=0 QUICKSTART=0 ADDLOCAL=ALL UI_LANGS=pt_BR
-start /wait %~dp0\libreoffice\LibreOffice_6.3.5_Win_x64_helppack_pt-BR.msi /qn ALLUSERS=1 CREATEDESKTOPLINK=1 REGISTER_ALL_MSO_TYPES=0 REGISTER_NO_MSO_TYPES=1 ISCHECKFORPRODUCTUPDATES=0 QUICKSTART=0 ADDLOCAL=ALL UI_LANGS=pt_BR
+start /wait %~dp0\ProgramasSilent\libreoffice\LibreOffice_6.3.5_Win_x64.msi /qn ALLUSERS=1 CREATEDESKTOPLINK=1 REGISTER_ALL_MSO_TYPES=0 REGISTER_NO_MSO_TYPES=1 ISCHECKFORPRODUCTUPDATES=0 QUICKSTART=0 ADDLOCAL=ALL UI_LANGS=pt_BR
+start /wait %~dp0\ProgramasSilent\libreoffice\LibreOffice_6.3.5_Win_x64_helppack_pt-BR.msi /qn ALLUSERS=1 CREATEDESKTOPLINK=1 REGISTER_ALL_MSO_TYPES=0 REGISTER_NO_MSO_TYPES=1 ISCHECKFORPRODUCTUPDATES=0 QUICKSTART=0 ADDLOCAL=ALL UI_LANGS=pt_BR
 
 echo.
 ==================================================================
 echo   Instalando 7-ZIP                       (passo 7 de 9)
 ==================================================================
-start /wait msiexec /i "%~dp0\7-zip\7z1900-x64.msi" /qn
+start /wait msiexec /i "%~dp0\ProgramasSilent\7-zip\7z1900-x64.msi" /qn
 
 echo.
 ==================================================================
 echo   Instalando TeamViewer10host            (passo 8 de 9)
 ==================================================================
-start /wait msiexec /i "%~dp0\teamviewer\TeamViewer_Host-idc2vgck97.msi" /qn
+start /wait msiexec /i "%~dp0\ProgramasSilent\teamviewer\TeamViewer_Host-idc2vgck97.msi" /qn
 
-regedit /s "%~dp0\teamviewer\TeamViewer_Settings.reg"
+regedit /s "%~dp0\ProgramasSilent\teamviewer\TeamViewer_Settings.reg"
 
 
 echo.
 ==================================================================
 echo   instalando  Antivirus kaspersky        (passo 9 de 9)
 ==================================================================
-"%~dp0\kaspersky\installer.exe"
+"%~dp0\ProgramasSilent\kaspersky\installer.exe"
 
 echo.
 ==================================================================
@@ -247,24 +245,17 @@ pause
 goto menu
 
 :INSTALL2
-@echo OFF
-echo Coloque seu Codigo Aqui
+echo ----------------------------------------------
+echo # Adobe Reader 11.0.23                       #
+echo # Google Chrome Stand alone Enterprise       #
+echo # Mozilla Firefox 73.0.1                     #
+echo # jre-8u241-windows-x64                      #
+echo # jre-8u241-windows-i586                     #
+echo # 7-ZIP 19.00                                #
+echo # LibreOffice_6.3.5 com help pack            #
+echo ----------------------------------------------
 pause
-goto Menu
-
-:INSTALL3
-@echo OFF
-echo Coloque seu Codigo Aqui
-pause
-goto Menu
-
-:INSTALL4
-
-@echo OFF
-echo Coloque seu Codigo Aqui
-pause
-goto menu
-
+goto opcao3
 
 
 
@@ -476,7 +467,8 @@ set DNS2=%DNS2%
   ::===========================================================================
   :Ativar
   echo.
-  SET /P CHAVE= DIGITE A SUA CHAVE DE ATIVACAO DO WINDOWS 10 ex:(XXX23-33346-54235-6366-52344)
+  echo             ex:(XXX23-33346-54235-6366-52344)
+  SET /P CHAVE= DIGITE A SUA CHAVE DE ATIVACAO DO WINDOWS 10 
   cscript slmr.vbs /ipk %CHAVE%
   cscript slmr.vbs /skms.lotro.cc
   cscript slmgr.vbs /ato
@@ -487,9 +479,8 @@ set DNS2=%DNS2%
   cd /d "%~dp0" && ( if exist "%temp%\getadmin.vbs" del "%temp%\getadmin.vbs" ) && fsutil dirty query %systemdrive% 1>nul 2>nul || (  cmd /u /c echo Set UAC = CreateObject^("Shell.Application"^) : UAC.ShellExecute "cmd.exe", "/k cd ""%~sdp0"" && ""%~s0""", "", "runas", 1 >> "%temp%\getadmin.vbs" && "%temp%\getadmin.vbs" && exit /B )
   CLS
   mode con cols=70 lines=40
-  ECHO ************************************************************
-  ECHO ***                   Windows Status                     ***
-  ECHO ************************************************************
+  echo    %ESC%[43m Checando o Status de Ativaçao %ESC%[0m
+  echo
   cscript //nologo %systemroot%\System32\slmgr.vbs /dli
   cscript //nologo %systemroot%\System32\slmgr.vbs /xpr
   ECHO ____________________________________________________________
@@ -554,7 +545,7 @@ GOTO MAINMENU
   echo (ATENCAO!!! esse comando vai formatar o Pendrive em NTFS)
   SET /P USB= Digite e letra do Diretorio USB (C:, D:, E: etc):
 format %USB%: /FS:NTFS /X /Q
-XCOPY %~dp0\miniwin7 "%USB%:\" /c /g /d /i /e /h /-y
+XCOPY %~dp0\ProgramasSilent\miniwin7 "%USB%:\" /c /g /d /i /e /h /-y
 echo %ESC%[42mpendrive Bootavel criado com sucesso.%ESC%[0m
 pause
 goto menu
@@ -601,15 +592,15 @@ if errorlevel 1 goto :MENUP
   goto END
 
   :OPEN6
-  XCOPY %~dp0\msdos C:\ /c /g /d /i /e /h /-y
+  XCOPY %~dp0\ProgramasSilent\msdos C:\ /c /g /d /i /e /h /-y
 
-  "%~dp0\dosbox\DOSBox.exe"
+  "%~dp0\ProgramasSilent\dosbox\DOSBox.exe"
   goto menu
 
 
 
   :OPEN5
-  start %~dp0/dosbox\snake.cmd
+  start %~dp0/ProgramasSilent\dosbox\snake.cmd
   goto menu
   :FAIL
   echo.
@@ -648,48 +639,48 @@ if errorlevel 1 goto :MENUP
   mode 79,32
   echo                                 _versao 1.0
   echo                              ==(W{==========-      /===-
-    echo                                [   (.--.)         /---=-_---~~~~~~~----__
-    echo                                [ \_,[**],__      ]===-~___            _,-'`
-    echo                   -==\\        `\ ' `--'   ),    `//~\\   ~~~~`--._.-~
+  echo                                [   (.--.)         /---=-_---~~~~~~~----__
+  echo                                [ \_,[**],__      ]===-~___            _,-'`
+  echo                   -==\\        `\ ' `--'   ),    `//~\\   ~~~~`--._.-~
   echo               ______-==[        /`\_. .__/\ \    ] ]  \\          _-~`
   echo            -~~~  ,-/-==\\      (   [ .  ]  ~~]   ] ]   `\       ,'
-    echo         __--~~~  ,-/-==\\      (   [ .  ]  ~~]   ] ]   `\       ,'
-      echo      _-~       /'    [  \\     )__/=-0--=\}{/   / /      \     /
-      echo    .'        /       [   \\      /~\___/~~\/  /' /        \   /
-      echo   /  ____  /         [    \`\.__/-~~   \  ]_/'  /          \/'
-      echo  /-'~    ~~~~~---__  [     ~-/~         ( )   /'        _--~`
-      echo                    \_[      /        _) [ ;  ),   __--~~
-echo                      '~~--_/      _-~/- []\   '-~ \
-echo                     {\__--_/}    / \\}-]){__\      \
+  echo         __--~~~  ,-/-==\\      (   [ .  ]  ~~]   ] ]   `\       ,'
+  echo      _-~       /'    [  \\     )__/=-0--=\}{/   / /      \     /
+  echo    .'        /       [   \\      /~\___/~~\/  /' /        \   /
+  echo   /  ____  /         [    \`\.__/-~~   \  ]_/'  /          \/'
+  echo  /-'~    ~~~~~---__  [     ~-/~         ( )   /'        _--~`
+  echo                    \_[      /        _) [ ;  ),   __--~~
+  echo                      '~~--_/      _-~/- []\   '-~ \
+  echo                     {\__--_/}    / \\}-]){__\      \
   echo                     /'   (_/  _-~  ] ]__}--{__]      ]
-    echo                    [   _/) )-~     ] ]__}--{__]      ]
+  echo                    [   _/) )-~     ] ]__}--{__]      ]
   echo                    / /~ ,_/       / /__}---{__/      ]
-    echo                   o-o _//        /-~_}---{__-~      /
-      echo                   (*(~          /~_}---{__-      _-~
-        echo                  ,/[           /__{--{__/     _-~
-          echo               ,//('(          [__}--{__]     /                  .--_
-            echo              ( ( '))          [__}--{__]    ]                 /' _-_~\
-            echo           `-)) )) (           [__}--{__]    ]               /'  /   ~\`\
-      echo          ,/,'//( (             \__}--{__\    \            /'  //      [[
-        echo        ,( ( ((, ))              ~-__}--{_~-_  ~--__---~'/'/  /'       VV
-          echo      `~/  )` ) ,/]                ~-_~}--{_/-__      __-~ _/
-          echo    ._-~//( )/ )) `                    ~~-'_/_/ /~~~~~__--~
-      echo     ;'( ')/ ,)(                              ~~~~~~~~
-      echo    ' ') '( (/
-        pause
-        goto menu
+  echo                   o-o _//        /-~_}---{__-~      /
+  echo                   (*(~          /~_}---{__-      _-~
+  echo                  ,/[           /__{--{__/     _-~
+  echo               ,//('(          [__}--{__]     /                  .--_
+  echo              ( ( '))          [__}--{__]    ]                 /' _-_~\
+  echo           `-)) )) (           [__}--{__]    ]               /'  /   ~\`\
+  echo          ,/,'//( (             \__}--{__\    \            /'  //      [[
+  echo        ,( ( ((, ))              ~-__}--{_~-_  ~--__---~'/'/  /'       VV
+  echo      `~/  )` ) ,/]                ~-_~}--{_/-__      __-~ _/
+  echo    ._-~//( )/ )) `                    ~~-'_/_/ /~~~~~__--~
+  echo     ;'( ')/ ,)(                              ~~~~~~~~
+  echo    ' ') '( (/
+pause
+goto menu
 
 
-        :opcao16
-        echo                       %ESC%[41m###########################%ESC%[0m
-        echo                       %ESC%[41m#  ESTA OPCAO NAO EXISTE  #%ESC%[0m
-        echo                       %ESC%[41m###########################%ESC%[0m
-        pause
-        goto menu
-        :setESC
-        for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do rem"') do (
-          set ESC=%%b
-          exit /B 0
-          )
+:opcao16
+echo                       %ESC%[41m###########################%ESC%[0m
+echo                       %ESC%[41m#  ESTA OPCAO NAO EXISTE  #%ESC%[0m
+echo                       %ESC%[41m###########################%ESC%[0m
+pause
+goto menu
+:setESC
+for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do rem"') do (
+  set ESC=%%b
+  exit /B 0
+  )
 
-        '
+'
