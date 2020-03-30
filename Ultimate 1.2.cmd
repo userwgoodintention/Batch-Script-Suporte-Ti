@@ -59,7 +59,7 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
   echo         %ESC%[36m1.%ESC%[0mAtivar e Colocar Senha Padrao do Administrador.
   echo         %ESC%[36m2.%ESC%[0mDesativar o Perfil.
   echo         %ESC%[36m3.%ESC%[0mInstalar Programas silenciosamente.
-  echo         %ESC%[36m4.%ESC%[0mLista de Programas que serao instalados.
+  echo         %ESC%[36m4.%ESC%[0mDocumentacao.
   echo         %ESC%[36m5.%ESC%[0mIp Fixo 1.
   echo         %ESC%[36m6.%ESC%[0mIp Fixo 2.
   echo         %ESC%[36m7.%ESC%[0mInstalar programa separado.
@@ -173,27 +173,27 @@ goto menu
 cls
 echo.
 ==================================================================
-echo   Instalando Adobe Reader                (passo 1 de 9)
+echo   Instalando Adobe Reader                (passo 1 de 8)
 ==================================================================
 start /wait msiexec /i "%~dp0\ProgramasSilent\adobe\AcroRead.msi" /qn
 
 echo.
 ==================================================================
-echo   Instalando Google Chrome               (passo 2 de 9)
+echo   Instalando Google Chrome               (passo 2 de 8)
 ==================================================================
 
 start /wait msiexec /i "%~dp0\ProgramasSilent\chrome\GoogleChromeStandaloneEnterprise64.msi" /qn
 
 echo.
 ==================================================================
-echo   Instalando Mozilla Firefox             (passo 3 de 9)ProgramasSilent\
+echo   Instalando Mozilla Firefox             (passo 3 de 8)
 ==================================================================
 
 start /wait msiexec /i "%~dp0\ProgramasSilent\firefox\Firefox Setup 73.0.1.msi" /qn
 
 echo.
 ==================================================================
-echo   Instalando java 32 e 64bits            (passo 4 de 9)
+echo   Instalando java 32 e 64bits            (passo 4 de 8)
 ==================================================================
 
 start /wait %~dp0/ProgramasSilent\java/jre-8u241-windows-x64.exe /s INSTALLDIR=C:\java\jre64
@@ -202,14 +202,14 @@ start /wait %~dp0/ProgramasSilent\java/jre-8u241-windows-i586.exe /s INSTALLDIR=
 
 echo.
 ==================================================================
-echo   Instalando pdfsam-v3                   (passo 5 de 9)
+echo   Instalando pdfsam-v3                   (passo 5 de 8)
 ==================================================================
 
 start /wait msiexec /i "%~dp0\ProgramasSilent\pdfsam\pdfsam-v3.3.0.msi" /qn
 
 echo.
 ==================================================================
-echo   Instalando libreoffice com HelpPack    (passo 6 de 9)
+echo   Instalando libreoffice com HelpPack    (passo 6 de 8)
 ==================================================================
 If not exist C:\install\logs\ md C:\install\logs\
 start /wait %~dp0\ProgramasSilent\libreoffice\LibreOffice_6.3.5_Win_x64.msi /qn ALLUSERS=1 CREATEDESKTOPLINK=1 REGISTER_ALL_MSO_TYPES=0 REGISTER_NO_MSO_TYPES=1 ISCHECKFORPRODUCTUPDATES=0 QUICKSTART=0 ADDLOCAL=ALL UI_LANGS=pt_BR
@@ -217,24 +217,19 @@ start /wait %~dp0\ProgramasSilent\libreoffice\LibreOffice_6.3.5_Win_x64_helppack
 
 echo.
 ==================================================================
-echo   Instalando 7-ZIP                       (passo 7 de 9)
+echo   Instalando 7-ZIP                       (passo 7 de 8)
 ==================================================================
 start /wait msiexec /i "%~dp0\ProgramasSilent\7-zip\7z1900-x64.msi" /qn
 
 echo.
 ==================================================================
-echo   Instalando TeamViewer10host            (passo 8 de 9)
+echo   Instalando TeamViewer10host            (passo 8 de 8)
 ==================================================================
 start /wait msiexec /i "%~dp0\ProgramasSilent\teamviewer\TeamViewer_Host-idc2vgck97.msi" /qn
 
 regedit /s "%~dp0\ProgramasSilent\teamviewer\TeamViewer_Settings.reg"
 
 
-echo.
-==================================================================
-echo   instalando  Antivirus kaspersky        (passo 9 de 9)
-==================================================================
-"%~dp0\ProgramasSilent\kaspersky\installer.exe"
 
 echo.
 ==================================================================
@@ -260,15 +255,7 @@ goto opcao3
 
 
 :opcao4
-echo ----------------------------------------------
-echo # Adobe Reader 11.0.23                       #
-echo # Google Chrome Stand alone Enterprise       #
-echo # Mozilla Firefox 73.0.1                     #
-echo # jre-8u241-windows-x64                      #
-echo # jre-8u241-windows-i586                     #
-echo # 7-ZIP 19.00                                #
-echo # LibreOffice_6.3.5 com help pack            #
-echo ----------------------------------------------
+echo nao foi desenvolvido ainda
 pause
 goto menu
 
