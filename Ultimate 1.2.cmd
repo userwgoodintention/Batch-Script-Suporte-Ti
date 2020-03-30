@@ -1,61 +1,61 @@
-'  @echo off
-  :: BatchGotAdmin
-  :-------------------------------------
-  REM  --> Check for permissions
-      IF "%PROCESSOR_ARCHITECTURE%" EQU "amd64" (
-  >nul 2>&1 "%SYSTEMROOT%\SysWOW64\cacls.exe" "%SYSTEMROOT%\SysWOW64\config\system"
-  ) ELSE (
-  >nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
-  )
+@echo off  
+:: BatchGotAdmin
+:-------------------------------------
+REM  --> Check for permissions
+    IF "%PROCESSOR_ARCHITECTURE%" EQU "amd64" (
+>nul 2>&1 "%SYSTEMROOT%\SysWOW64\cacls.exe" "%SYSTEMROOT%\SysWOW64\config\system"
+) ELSE (
+>nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
+)
 
-  REM --> If error flag set, we do not have admin.
-  if '%errorlevel%' NEQ '0' (
-      echo Requesting administrative privileges...
-      goto UACPrompt
-  ) else ( goto gotAdmin )
+REM --> If error flag set, we do not have admin.
+if '%errorlevel%' NEQ '0' (
+    echo Requesting administrative privileges...
+    goto UACPrompt
+) else ( goto gotAdmin )
 
-  :UACPrompt
-      echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
-      set params= %*
-      echo UAC.ShellExecute "cmd.exe", "/c ""%~s0"" %params:"=""%", "", "runas", 1 >> "%temp%\getadmin.vbs"
+:UACPrompt
+    echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
+    set params= %*
+    echo UAC.ShellExecute "cmd.exe", "/c ""%~s0"" %params:"=""%", "", "runas", 1 >> "%temp%\getadmin.vbs"
 
-      "%temp%\getadmin.vbs"
-      del "%temp%\getadmin.vbs"
-      exit /B
+    "%temp%\getadmin.vbs"
+    del "%temp%\getadmin.vbs"
+    exit /B
 
-  :gotAdmin
-      pushd "%CD%"
-      CD /D "%~dp0"
+:gotAdmin
+    pushd "%CD%"
+    CD /D "%~dp0"
 
-  @echo off
-  title ULTIMATE Tool Suporte TI [Ver1.0] LuanSoftwares©
-  cls
-  :menu
-  mode con cols=75 lines=40
-  setlocal
-  call :setESC
-  color 07
-  cls
-  echo   %ESC%[93mULTIMATE Tool Suporte TI: [Versao 1.2] LuanSoftwares(c)©  %ESC%[0m
-  echo.
-  echo.
-  :::                   ___________________
-  :::                   | _______________ |
-  :::                   | |XXXXmsdosXXXX| |
-  :::                   | |mount c c:\XX| |
-  :::                   | |c:XXXXXXXXXXX| |
-  :::                   | |c:cd d1mXXXXX| |
-  :::                   | |setupXXXXXXXX| |
-  :::                   |_________________|
-  :::                       _[_______]_
-  :::                   ___[___________]___
-  :::                  |         [_____] []|__
-  :::                  |         [_____] []|  \__
-  :::                  L___________________J     \
-  :::                   ___________________      /\
-  :::                  /###################\    (__)
-  :::
-  for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
+@echo off
+title ULTIMATE Tool Suporte TI [Ver1.0] LuanSoftwares©
+cls
+:menu
+mode con cols=75 lines=40
+setlocal
+call :setESC
+color 07
+cls
+echo   %ESC%[93mULTIMATE Tool Suporte TI: [Versao 1.2] LuanSoftwares(c)©  %ESC%[0m
+echo.
+echo.
+:::                   ___________________
+:::                   | _______________ |               
+:::                   | |XXXXmsdosXXXX| |
+:::                   | |mount c c:\XX| |
+:::                   | |c:XXXXXXXXXXX| |
+:::                   | |c:cd d1mXXXXX| |
+:::                   | |setupXXXXXXXX| |
+:::                   |_________________|
+:::                       _[_______]_
+:::                   ___[___________]___
+:::                  |         [_____] []|__
+:::                  |         [_____] []|  \__
+:::                  L___________________J     \ 
+:::                   ___________________      /\
+:::                  /###################\    (__)
+:::
+for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
   echo         %ESC%[36m1.%ESC%[0mAtivar e Colocar Senha Padrao do Administrador.
   echo         %ESC%[36m2.%ESC%[0mDesativar o Perfil.
   echo         %ESC%[36m3.%ESC%[0mInstalar Programas silenciosamente.
@@ -74,10 +74,7 @@
   echo.
   echo        Computador: %computername%        Usuario: %username%
   echo.
-  echo.
-
-
-
+  echo.    
   set /p opcao= Escolha uma opcao:
   echo.
   if %opcao% equ 1 goto opcao1
@@ -104,8 +101,8 @@
   echo.
   echo    %ESC%[42mAtivando Perfil de Administrador%ESC%[0m
   echo.
-  SET /P PERFIL= Digite o nome do perfil ex(Administrador ou Administrator):
-  net user %PERFIL% /active:yes && goto erromsg5 || goto erromsg4
+  SET /P PERFIL1= Digite o nome do perfil ex(Administrador ou Administrator):
+  net user %PERFIL1% /active:yes && goto erromsg5 || goto erromsg4
   echo.
   pause
   goto menu
@@ -114,7 +111,7 @@
   :erromsg5
   echo  %ESC%[42mAtivado Perfil de Admin com sucesso%ESC%[0m
   echo.
-  net user %PERFIL% * && goto erromsg3 || goto erromsg4
+  net user %PERFIL1% * && goto erromsg3 || goto erromsg4
   pause
   goto menu
 
