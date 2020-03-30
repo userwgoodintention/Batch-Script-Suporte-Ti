@@ -446,15 +446,15 @@ set DNS2=%DNS2%
   pushd "%~dp0"
   cd /d "%~dp0"
   :MAINMENU
-  echo.  :================================================================:
+  echo.  
   echo.
-  Echo.    [1] Ativar Windows 10 com Licenca Digital
-  Echo.
-  Echo.    [2] Checar Status de Ativacao do Windows
+  echo         %ESC%[36m1.%ESC%[0mAtivar Windows 10 com Licenca Digital.
   echo.
-  Echo.    [3] Sair
+  echo         %ESC%[36m2.%ESC%[0mChecar Status de Ativacao do Windows.
   echo.
-  echo.  :================================================================:
+  echo         %ESC%[36m3.%ESC%[0mSair.
+  echo.
+  echo.  
   choice /C:123 /N /M "ESCOLHA : "
   if errorlevel 3 goto :Sair
   if errorlevel 2 goto :Check
@@ -479,8 +479,8 @@ set DNS2=%DNS2%
   cd /d "%~dp0" && ( if exist "%temp%\getadmin.vbs" del "%temp%\getadmin.vbs" ) && fsutil dirty query %systemdrive% 1>nul 2>nul || (  cmd /u /c echo Set UAC = CreateObject^("Shell.Application"^) : UAC.ShellExecute "cmd.exe", "/k cd ""%~sdp0"" && ""%~s0""", "", "runas", 1 >> "%temp%\getadmin.vbs" && "%temp%\getadmin.vbs" && exit /B )
   CLS
   mode con cols=70 lines=40
-  echo    %ESC%[43m Checando o Status de Ativaçao %ESC%[0m
-  echo
+  echo    %ESC%[43m Checando o Status de Ativacao %ESC%[0m
+  echo.
   cscript //nologo %systemroot%\System32\slmgr.vbs /dli
   cscript //nologo %systemroot%\System32\slmgr.vbs /xpr
   ECHO ____________________________________________________________
@@ -506,44 +506,44 @@ GOTO MAINMENU
   pause
   goto menu
 
-  :opcao13
-  ECHO OFF
-  mode 110,50
-  echo [A] Instalar a Aplicacao Chocolatey(precisa reiniciar o pc).
-  echo.
-  echo [B] ja possuo o chocolatey e quero instalar um novo software(ex: Choco install adobereader).
-  echo entre no site para verificar todos os pacotes possiveis de instalacao (https://chocolatey.org/packages)
-  echo.
-  echo [C] Voltar ao Menu Principal.
-  echo.
-  choice /C ABC /N /M "Escolha:"
-  if errorlevel 3 goto :CHOCOSAIR
-  if errorlevel 2 goto :CHOCOINSTALL
-  if errorlevel 1 goto :CHOCO
-  ::==============================================================================================================
-  :CHOCOINSTALL
-  cls
-  mode 70,37
-  cmd.exe
-  goto menu
-  ::===============================================================================================================
-  :CHOCO
-  @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "[System.Net.ServicePointManager]::SecurityProtocol = 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
-  goto menu
-  ::===============================================================================================================
-  :CHOCOSAIR
-  goto menu
+:opcao13
+ECHO OFF
+mode 110,50
+echo [A] Instalar a Aplicacao Chocolatey(precisa reiniciar o pc).
+echo.
+echo [B] ja possuo o chocolatey e quero instalar um novo software(ex: Choco install adobereader).
+echo entre no site para verificar todos os pacotes possiveis de instalacao (https://chocolatey.org/packages)
+echo.
+echo [C] Voltar ao Menu Principal.
+echo.
+choice /C ABC /N /M "Escolha:"
+if errorlevel 3 goto :CHOCOSAIR
+if errorlevel 2 goto :CHOCOINSTALL
+if errorlevel 1 goto :CHOCO
+::==============================================================================================================
+:CHOCOINSTALL
+cls
+mode 70,37
+cmd.exe
+goto menu
+::===============================================================================================================
+:CHOCO
+@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "[System.Net.ServicePointManager]::SecurityProtocol = 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+goto menu
+::===============================================================================================================
+:CHOCOSAIR
+goto menu
 
-  :opcao14
-  echo Sera necessario um Pendrive que podera ser formatado!!
-  echo Deseja continuar?
-  choice /C SN /N /M " [S] SIM  [N]NAO  Escolha:"
-  if errorlevel 2 goto :bootoff
-  if errorlevel 1 goto :booton
+:opcao14
+echo Sera necessario um Pendrive que podera ser formatado!!
+echo Deseja continuar?
+choice /C SN /N /M " [S] SIM  [N]NAO  Escolha:"
+if errorlevel 2 goto :bootoff
+if errorlevel 1 goto :booton
 
-  :booton
-  echo (ATENCAO!!! esse comando vai formatar o Pendrive em NTFS)
-  SET /P USB= Digite e letra do Diretorio USB (C:, D:, E: etc):
+:booton
+echo (ATENCAO!!! esse comando vai formatar o Pendrive em NTFS)
+SET /P USB= Digite e letra do Diretorio USB (C:, D:, E: etc):
 format %USB%: /FS:NTFS /X /Q
 XCOPY %~dp0\ProgramasSilent\miniwin7 "%USB%:\" /c /g /d /i /e /h /-y
 echo %ESC%[42mpendrive Bootavel criado com sucesso.%ESC%[0m
