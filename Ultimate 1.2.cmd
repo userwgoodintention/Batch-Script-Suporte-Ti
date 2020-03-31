@@ -147,7 +147,7 @@ pause
 goto menu
 
 :erromsg2
-echo  %ESC%[41mPerfil nao foi desativado (possivelmente nome perfil errado)%ESC%[0m
+echo  %ESC%[41mPerfil nao foi desativado%ESC%[0m
 echo.
 pause
 goto menu
@@ -501,14 +501,22 @@ set DNS2=%DNS2%
   goto menu
   ::===========================================================================
   :Ativar
-  echo.
-  echo             ex:(XXX23-33346-54235-6366-52344)
-  SET /P CHAVE= DIGITE A SUA CHAVE DE ATIVACAO DO WINDOWS 10 
-  cscript slmr.vbs /ipk %CHAVE%
-  cscript slmr.vbs /skms.lotro.cc
-  cscript slmgr.vbs /ato
-  pause
-  goto menu
+  @echo off
+set slp=SoftwareLicensingProduct
+set sps=SoftwareLicensingService
+FOR /F "tokens=3" %%I IN ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" ^| findstr CurrentVersion ^| findstr REG_SZ') DO (SET winver=%%I)
+for /f "tokens=2* delims= " %%a in ('reg query "HKLM\System\CurrentControlSet\Control\Session Manager\Environment" /v "PROCESSOR_ARCHITECTURE"') do if "%%b"=="AMD64" (set vera=x64) else (set vera=x86)
+for /f "tokens=2 delims== " %%A in ('"wmic path %slp% where (Name LIKE '%%Windows%%' and PartialProductKey is not null) get LicenseStatus /format:list"') do set status=%%A
+for /f "tokens=2 delims=, " %%A in ('"wmic path %slp% where (Name LIKE '%%Windows%%' and LicenseStatus='%status%') get name /value"') do set osedition=%%A
+echo  %ESC%[44mSeu Sistema Operacional atual: Windows 10 %osedition% %vera%%ESC%[0m
+echo.
+echo             ex:(XXX23-33346-54235-6366-52344)
+SET /P CHAVE= Digite a sua chave para Ativacao.
+cscript slmr.vbs /ipk %CHAVE%
+cscript slmr.vbs /skms.lotro.cc
+cscript slmgr.vbs /ato
+pause
+goto menu
   ::=====================================================================================
   :Check
   cd /d "%~dp0" && ( if exist "%temp%\getadmin.vbs" del "%temp%\getadmin.vbs" ) && fsutil dirty query %systemdrive% 1>nul 2>nul || (  cmd /u /c echo Set UAC = CreateObject^("Shell.Application"^) : UAC.ShellExecute "cmd.exe", "/k cd ""%~sdp0"" && ""%~s0""", "", "runas", 1 >> "%temp%\getadmin.vbs" && "%temp%\getadmin.vbs" && exit /B )
@@ -558,7 +566,7 @@ if errorlevel 1 goto :CHOCO
 ::==============================================================================================================
 :CHOCOINSTALL
 cls
-mode 70,37
+mode 70,40
 cmd.exe
 goto menu
 ::===============================================================================================================
