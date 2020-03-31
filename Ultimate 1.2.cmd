@@ -58,7 +58,7 @@ echo.
 for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
   echo         %ESC%[36m1.%ESC%[0mAtivar e Colocar Senha Padrao do Administrador.
   echo         %ESC%[36m2.%ESC%[0mDesativar o Perfil.
-  echo         %ESC%[36m3.%ESC%[0mInstalar Programas silenciosamente.
+  echo         %ESC%[36m3.%ESC%[0mInstalar CheckList d Programas silenciosamente.
   echo         %ESC%[36m4.%ESC%[0mGerador de Senhas.
   echo         %ESC%[36m5.%ESC%[0mIp Fixo 1.
   echo         %ESC%[36m6.%ESC%[0mIp Fixo 2.
