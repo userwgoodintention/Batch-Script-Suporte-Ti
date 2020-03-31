@@ -59,7 +59,7 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
   echo         %ESC%[36m1.%ESC%[0mAtivar e Colocar Senha Padrao do Administrador.
   echo         %ESC%[36m2.%ESC%[0mDesativar o Perfil.
   echo         %ESC%[36m3.%ESC%[0mInstalar Programas silenciosamente.
-  echo         %ESC%[36m4.%ESC%[0mDocumentacao.
+  echo         %ESC%[36m4.%ESC%[0mGerador de Senhas.
   echo         %ESC%[36m5.%ESC%[0mIp Fixo 1.
   echo         %ESC%[36m6.%ESC%[0mIp Fixo 2.
   echo         %ESC%[36m7.%ESC%[0mInstalar programa separado.
@@ -111,6 +111,7 @@ goto menu
 :erromsg5
 echo  %ESC%[42mAtivado Perfil de Admin com sucesso%ESC%[0m
 echo.
+echo    %ESC%[43mDigite a Senha%ESC%[0m
 net user %PERFIL1% * && goto erromsg3 || goto erromsg4
 pause
 goto menu
@@ -255,8 +256,55 @@ goto opcao3
 
 
 :opcao4
-echo nao foi desenvolvido ainda
-pause
+@echo off
+:Start2
+cls
+goto Start
+:Start
+title Password Generator
+echo I will make you a new password. 
+echo Please write the password down somewhere in case you forget it. 
+echo ----------------------------------------¬-----------------------
+echo 1) 1 Random Password
+echo 2) 5 Random Passwords
+echo 3) 10 Random Passwords
+echo Input your choice
+set input=
+set /p input= Choice: 
+if %input%==1 goto A if NOT goto Start2
+if %input%==2 goto B if NOT goto Start2
+if %input%==3 goto C if NOT goto Start2
+:A
+cls
+echo Your password is %random%
+echo Now choose what you want to do. 
+echo 1) Go back to the beginning
+echo 2) Exit
+set input=
+set /p input= Choice: 
+if %input%==1 goto Start2 if NOT goto Start 2
+if %input%==2 goto Exit if NOT goto Start 2
+:B
+cls
+echo Your 5 passwords are %random%, %random%, %random%, %random%, %random%.
+echo Now choose what you want to do. 
+echo 1) Go back to the beginning
+echo 2) Exit
+set input=
+set /p input= Choice: 
+if %input%==1 goto Start2 if NOT goto Start 2
+if %input%==2 goto Exit if NOT goto Start 2
+:C
+cls
+echo Your 10 Passwords are %random%, %random%, %random%, %random%, %random%, %random%, %random%, %random%, %random%, %random%
+echo Now choose what you want to do. 
+echo 1) Go back to the beginning
+echo 2) Exit
+set input=
+set /p input= Choice: 
+if %input%==1 goto Start2 if NOT goto Start 2
+if %input%==2 goto Exit if NOT goto Start 2
+:Exit
 goto menu
 
 :opcao5
@@ -424,7 +472,7 @@ set DNS2=%DNS2%
     del /f /q "%temp%\GetAdminUnicode.vbs" >nul 2>&1
     exit
     )
-  mode con cols=70 lines=37
+  mode con cols=70 lines=40
   color
   title Ativacao do Windows 10 (SESP)
   ::===========================================================================
