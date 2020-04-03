@@ -69,7 +69,7 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
   echo         %ESC%[36m11.%ESC%[0mVerificar Configuracoes e Informacoes do PC.
   echo         %ESC%[36m12.%ESC%[0mVerificar Todos os Programas instalados no PC.
   echo         %ESC%[36m13.%ESC%[0mInstalar Softwares pela internet(com chocolatey).
-  echo         %ESC%[36m14.%ESC%[0mFazer Pendrive Bootavel Windows 7 mini(quebrar senha).
+  echo         %ESC%[36m14.%ESC%[0mFazer Pendrive Bootavel Com uma ISO.
   echo         %ESC%[36m15.%ESC%[0mContato e Informacoes do Software.
   echo.
   echo        Computador: %computername%        Usuario: %username%
@@ -587,11 +587,21 @@ if errorlevel 1 goto :booton
 :booton
 echo (ATENCAO!!! esse comando vai formatar o Pendrive em NTFS)
 SET /P USB= Digite e letra do Diretorio USB (C:, D:, E: etc):
-format %USB%: /FS:NTFS /X /Q
-XCOPY %~dp0\ProgramasSilent\miniwin7 "%USB%:\" /c /g /d /i /e /h /-y
+format %USB%: /FS:NTFS /X /Q && goto copyb || goto erromsg10
+
+:copyb
+XCOPY %~dp0\ProgramasSilent\ISO "%USB%:\" /c /g /d /i /e /h /-y && goto msgcerto || goto erromsg10
+
+:msgcerto
 echo %ESC%[42mpendrive Bootavel criado com sucesso.%ESC%[0m
 pause
 goto menu
+
+:erromsg10
+echo %ESC%[41m ALGO DEU ERRADO. %ESC%[0m
+pause
+goto menu
+
 
 :bootoff
 goto menu
