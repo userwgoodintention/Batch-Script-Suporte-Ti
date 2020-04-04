@@ -160,7 +160,7 @@ echo.
 echo.
 echo         %ESC%[36m1.%ESC%[0mInstalar programas principais silenciosamente
 echo         %ESC%[36m2.%ESC%[0mLista de Programas
-echo                                                   3.Sair.
+echo         %ESC%[36m3.%ESC%[0mSair.
 choice /C 12345 /N /M "Escolha:"
 if errorlevel 3 goto :POPSAIR
 if errorlevel 2 goto :INSTALL2
